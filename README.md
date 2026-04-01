@@ -1,5 +1,5 @@
 # Miniprojet - Annuaire Sociétés & Administration
-voici le contenu que je dois mettre # 🏢 Annuaire Sociétés & Administration — Person 4
+# 🏢 Annuaire Sociétés & Administration — Person 4
 
 ## 📌 Description
 Module d'annuaire des sociétés tech tunisiennes avec interface 
