@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+uploads/
+*.pdf
+*.jpg
+*.jpeg
+*.png

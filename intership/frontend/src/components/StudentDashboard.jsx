@@ -1,11 +1,14 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Profile from "./student/Profile";
 import Skills from "./student/Skills";
 import Internships from "./student/Internships";
 import Documents from "./student/Documents";
 import "../styles/StudentDashboard.css";
-import { getProfile } from "../services/student.service";
+import {
+  downloadProfilePicture,
+  getProfile,
+} from "../services/student.service";
 import Loading from "../ui/Loading";
 
 const StudentDashboard = () => {
@@ -14,6 +17,7 @@ const StudentDashboard = () => {
   const [user, set_user] = useState(null);
   const [profile, set_profile] = useState(null);
   const [loading, set_loading] = useState(true);
+  const [avatar_url, set_avatar_url] = useState(null);
 
   useEffect(() => {
     const user_type = localStorage.getItem("userType");
@@ -31,7 +35,7 @@ const StudentDashboard = () => {
         const response = await getProfile();
         set_profile(response.data);
       } catch (error) {
-        console.error("Erreur chargement dashboard student :", error);
+        console.error("Error loading student dashboard:", error);
       } finally {
         set_loading(false);
       }
@@ -40,13 +44,44 @@ const StudentDashboard = () => {
     load_profile();
   }, [navigate]);
 
+  useEffect(() => {
+    let object_url = null;
+
+    const load_avatar = async () => {
+      if (!profile?.profile_picture) {
+        set_avatar_url(null);
+        return;
+      }
+
+      try {
+        const response = await downloadProfilePicture();
+        const blob = new Blob([response.data]);
+        object_url = URL.createObjectURL(blob);
+        set_avatar_url(object_url);
+      } catch (error) {
+        console.error("Error loading profile picture:", error);
+        set_avatar_url(null);
+      }
+    };
+
+    load_avatar();
+
+    return () => {
+      if (object_url) {
+        URL.revokeObjectURL(object_url);
+      }
+    };
+  }, [profile?.profile_picture]);
+
   const handle_logout = () => {
     localStorage.clear();
     navigate("/");
   };
 
   const completion = useMemo(() => {
-    if (!profile) return 0;
+    if (!profile) {
+      return 0;
+    }
 
     const checks = [
       profile.first_name,
@@ -62,17 +97,20 @@ const StudentDashboard = () => {
       profile.profile_picture,
     ];
 
-    const filled_count = checks.filter((value) => value !== null && value !== "").length;
+    const filled_count = checks.filter(
+      (value) => value !== null && value !== ""
+    ).length;
+
     return Math.round((filled_count / checks.length) * 100);
   }, [profile]);
 
   const completion_items = [
-    { label: "Photo de profil", ok: !!profile?.profile_picture },
-    { label: "CV importé", ok: !!profile?.cv_path },
-    { label: "Téléphone", ok: !!profile?.phone },
-    { label: "Adresse", ok: !!profile?.address },
-    { label: "Université", ok: !!profile?.university },
-    { label: "Spécialité", ok: !!profile?.major },
+    { label: "Profile picture", ok: !!profile?.profile_picture },
+    { label: "CV uploaded", ok: !!profile?.cv_path },
+    { label: "Phone number", ok: !!profile?.phone },
+    { label: "Address", ok: !!profile?.address },
+    { label: "University", ok: !!profile?.university },
+    { label: "Major", ok: !!profile?.major },
   ];
 
   const render_dashboard_home = () => {
@@ -81,29 +119,30 @@ const StudentDashboard = () => {
         <div className="student-hero-card">
           <div>
             <div className="student-hero-title">
-              Bonjour {profile?.first_name || "Étudiant"} 👋
+              Hello {profile?.first_name || "Student"} 👋
             </div>
+
             <div className="student-hero-subtitle">
-              Gérez votre profil, ajoutez votre CV, mettez à jour vos compétences
-              et suivez votre parcours de stage dans un seul espace.
+              Manage your profile, upload your CV, update your skills, and keep
+              track of your internship journey in one place.
             </div>
 
             <div className="student-badges">
               <span className="student-badge">
-                {profile?.education_level || "Niveau non défini"}
+                {profile?.education_level || "Education level not set"}
               </span>
               <span className="student-badge">
-                {profile?.major || "Spécialité non définie"}
+                {profile?.major || "Major not set"}
               </span>
               <span className="student-badge">
-                {profile?.university || "Université non définie"}
+                {profile?.university || "University not set"}
               </span>
             </div>
           </div>
 
           <div className="student-progress-card">
             <div className="student-progress-header">
-              <div className="student-progress-title">Complétude du profil</div>
+              <div className="student-progress-title">Profile completion</div>
               <div className="student-progress-value">{completion}%</div>
             </div>
 
@@ -128,63 +167,69 @@ const StudentDashboard = () => {
         <div className="student-grid">
           <div className="student-stat-card">
             <div className="student-stat-value">{profile?.cv_path ? 1 : 0}</div>
-            <div className="student-stat-label">CV importé</div>
+            <div className="student-stat-label">CV uploaded</div>
           </div>
 
           <div className="student-stat-card">
-            <div className="student-stat-value">{profile?.profile_picture ? 1 : 0}</div>
-            <div className="student-stat-label">Photo de profil</div>
+            <div className="student-stat-value">
+              {profile?.profile_picture ? 1 : 0}
+            </div>
+            <div className="student-stat-label">Profile picture</div>
           </div>
 
           <div className="student-stat-card">
             <div className="student-stat-value">{completion}%</div>
-            <div className="student-stat-label">Profil complété</div>
+            <div className="student-stat-label">Profile completed</div>
           </div>
         </div>
 
         <div className="student-grid">
           <div className="student-section-card">
-            <h3>Mon profil</h3>
+            <h3>My profile</h3>
             <p className="student-mini-text">
-              Mettez à jour vos informations personnelles et académiques pour
-              améliorer votre visibilité.
+              Update your personal and academic information to improve your
+              visibility.
             </p>
+
             <div className="student-actions">
               <button
                 className="student-primary-btn"
                 onClick={() => set_active_tab("profile")}
               >
-                Modifier mon profil
+                Edit my profile
               </button>
             </div>
           </div>
 
           <div className="student-section-card">
-            <h3>Mes documents</h3>
+            <h3>My documents</h3>
             <p className="student-mini-text">
-              Importez votre CV et votre photo de profil pour compléter votre dossier.
+              Upload your CV and your profile picture to complete your student
+              account.
             </p>
+
             <div className="student-actions">
               <button
                 className="student-primary-btn"
                 onClick={() => set_active_tab("documents")}
               >
-                Gérer mes documents
+                Manage my documents
               </button>
             </div>
           </div>
 
           <div className="student-section-card">
-            <h3>Mes compétences</h3>
+            <h3>My skills</h3>
             <p className="student-mini-text">
-              Ajoutez les technologies et compétences qui valorisent votre profil.
+              Add the technologies and skills that make your profile stronger.
             </p>
+
             <div className="student-actions">
               <button
                 className="student-primary-btn"
                 onClick={() => set_active_tab("skills")}
               >
-                Gérer mes compétences
+                Manage my skills
               </button>
             </div>
           </div>
@@ -234,20 +279,18 @@ const StudentDashboard = () => {
         <div className="student-layout">
           <aside className="student-sidebar">
             <div className="student-profile-summary">
-              <div className="student-avatar">
-                {profile?.profile_picture ? (
+              <div className="student-avatar-circle">
+                {avatar_url ? (
                   <img
-                    src={profile.profile_picture}
-                    alt="Profil"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                    }}
+                    src={avatar_url}
+                    alt="Student avatar"
+                    className="student-avatar-img"
                   />
                 ) : (
-                  `${profile?.first_name?.[0] || "S"}${profile?.last_name?.[0] || ""}`
+                  <span>
+                    {profile?.first_name?.charAt(0) || "S"}
+                    {profile?.last_name?.charAt(0) || ""}
+                  </span>
                 )}
               </div>
 
@@ -256,48 +299,58 @@ const StudentDashboard = () => {
               </div>
 
               <div className="student-mini-text">
-                {profile?.major || "Spécialité non définie"}
+                {profile?.major || "Major not set"}
               </div>
 
               <div className="student-mini-text">
-                {profile?.university || "Université non définie"}
+                {profile?.university || "University not set"}
               </div>
             </div>
 
             <div className="student-menu">
               <button
-                className={`student-menu-btn ${active_tab === "dashboard" ? "active" : ""}`}
+                className={`student-menu-btn ${
+                  active_tab === "dashboard" ? "active" : ""
+                }`}
                 onClick={() => set_active_tab("dashboard")}
               >
-                Tableau de bord
+                Dashboard
               </button>
 
               <button
-                className={`student-menu-btn ${active_tab === "profile" ? "active" : ""}`}
+                className={`student-menu-btn ${
+                  active_tab === "profile" ? "active" : ""
+                }`}
                 onClick={() => set_active_tab("profile")}
               >
-                Mon profil
+                My profile
               </button>
 
               <button
-                className={`student-menu-btn ${active_tab === "documents" ? "active" : ""}`}
+                className={`student-menu-btn ${
+                  active_tab === "documents" ? "active" : ""
+                }`}
                 onClick={() => set_active_tab("documents")}
               >
-                Mon CV & photo
+                My CV & photo
               </button>
 
               <button
-                className={`student-menu-btn ${active_tab === "skills" ? "active" : ""}`}
+                className={`student-menu-btn ${
+                  active_tab === "skills" ? "active" : ""
+                }`}
                 onClick={() => set_active_tab("skills")}
               >
-                Mes compétences
+                My skills
               </button>
 
               <button
-                className={`student-menu-btn ${active_tab === "internships" ? "active" : ""}`}
+                className={`student-menu-btn ${
+                  active_tab === "internships" ? "active" : ""
+                }`}
                 onClick={() => set_active_tab("internships")}
               >
-                Mes stages
+                My internships
               </button>
             </div>
           </aside>

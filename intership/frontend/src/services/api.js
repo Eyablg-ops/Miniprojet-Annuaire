@@ -44,12 +44,6 @@ export const recruiterRegister = (data) => api.post('/auth/recruiter/register', 
 export const login = (data) => api.post('/auth/login', data);
 
 // Student endpoints
-export const getStudentProfile = () => api.get('/student/profile');
-export const updateStudentProfile = (data) => api.put('/student/profile', data);
-export const addSkill = (data) => api.post('/student/skills', data);
-export const uploadCV = (formData) => api.post('/student/upload-cv', formData, {
-  headers: { 'Content-Type': 'multipart/form-data' }
-});
 export const getApplications = () => api.get('/student/applications');
 export const applyToInternship = (offerId, coverLetter) => 
   api.post(`/student/apply/${offerId}`, { coverLetter });

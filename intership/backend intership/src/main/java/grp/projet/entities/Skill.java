@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "skills")
 public class Skill {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,22 +21,43 @@ public class Skill {
     @Column(name = "skill_level")
     private SkillLevel skillLevel = SkillLevel.INTERMEDIATE;
 
-    public Skill() {}
+    public Skill() {
+    }
 
     public Skill(String skillName, SkillLevel skillLevel) {
         this.skillName = skillName;
         this.skillLevel = skillLevel;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Student getStudent() { return student; }
-    public void setStudent(Student student) { this.student = student; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getSkillName() { return skillName; }
-    public void setSkillName(String skillName) { this.skillName = skillName; }
+    public Student getStudent() {
+        return student;
+    }
 
-    public SkillLevel getSkillLevel() { return skillLevel; }
-    public void setSkillLevel(SkillLevel skillLevel) { this.skillLevel = skillLevel; }
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public String getSkillName() {
+        return skillName;
+    }
+
+    public void setSkillName(String skillName) {
+        this.skillName = skillName;
+    }
+
+    public SkillLevel getSkillLevel() {
+        return skillLevel;
+    }
+
+    public void setSkillLevel(SkillLevel skillLevel) {
+        this.skillLevel = skillLevel;
+    }
 }

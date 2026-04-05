@@ -40,7 +40,7 @@ function Profile({ profile, setProfile }) {
           setProfile(response.data);
         }
       } catch (error) {
-        console.error("Erreur chargement profil :", error);
+        console.error("Error loading profile:", error);
       }
     };
 
@@ -91,14 +91,14 @@ function Profile({ profile, setProfile }) {
 
       const response = await updateProfile(payload);
       set_editing(false);
-      set_message("Profil mis à jour avec succès.");
+      set_message("Profile updated successfully.");
 
       if (setProfile) {
         setProfile(response.data);
       }
     } catch (error) {
-      console.error("Erreur mise à jour profil :", error);
-      set_message("Erreur lors de la mise à jour du profil.");
+      console.error("Error updating profile:", error);
+      set_message("Error while updating profile.");
     } finally {
       set_saving(false);
     }
@@ -106,9 +106,9 @@ function Profile({ profile, setProfile }) {
 
   return (
     <div className="student-section-card">
-      <h2>Mon profil</h2>
+      <h2>My Profile</h2>
       <p className="student-mini-text">
-        Complétez vos informations personnelles et académiques.
+        Complete your personal and academic information.
       </p>
 
       {message && (
@@ -119,7 +119,7 @@ function Profile({ profile, setProfile }) {
 
       <div className="student-form-grid" style={{ marginTop: "20px" }}>
         <div className="student-form-group">
-          <label>Prénom</label>
+          <label>First Name</label>
           <input
             type="text"
             name="first_name"
@@ -130,7 +130,7 @@ function Profile({ profile, setProfile }) {
         </div>
 
         <div className="student-form-group">
-          <label>Nom</label>
+          <label>Last Name</label>
           <input
             type="text"
             name="last_name"
@@ -142,16 +142,11 @@ function Profile({ profile, setProfile }) {
 
         <div className="student-form-group">
           <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            disabled
-          />
+          <input type="email" name="email" value={form.email} disabled />
         </div>
 
         <div className="student-form-group">
-          <label>Téléphone</label>
+          <label>Phone</label>
           <input
             type="text"
             name="phone"
@@ -162,7 +157,7 @@ function Profile({ profile, setProfile }) {
         </div>
 
         <div className="student-form-group">
-          <label>Date de naissance</label>
+          <label>Date of Birth</label>
           <input
             type="date"
             name="date_of_birth"
@@ -173,7 +168,7 @@ function Profile({ profile, setProfile }) {
         </div>
 
         <div className="student-form-group">
-          <label>Niveau d'études</label>
+          <label>Education Level</label>
           <input
             type="text"
             name="education_level"
@@ -184,7 +179,7 @@ function Profile({ profile, setProfile }) {
         </div>
 
         <div className="student-form-group">
-          <label>Spécialité</label>
+          <label>Major</label>
           <input
             type="text"
             name="major"
@@ -195,7 +190,7 @@ function Profile({ profile, setProfile }) {
         </div>
 
         <div className="student-form-group">
-          <label>Université</label>
+          <label>University</label>
           <input
             type="text"
             name="university"
@@ -206,7 +201,7 @@ function Profile({ profile, setProfile }) {
         </div>
 
         <div className="student-form-group">
-          <label>Année de graduation</label>
+          <label>Graduation Year</label>
           <input
             type="number"
             name="graduation_year"
@@ -217,7 +212,7 @@ function Profile({ profile, setProfile }) {
         </div>
 
         <div className="student-form-group full">
-          <label>Adresse</label>
+          <label>Address</label>
           <textarea
             name="address"
             rows="4"
@@ -234,7 +229,7 @@ function Profile({ profile, setProfile }) {
             className="student-primary-btn"
             onClick={() => set_editing(true)}
           >
-            Modifier mon profil
+            Edit Profile
           </button>
         ) : (
           <>
@@ -243,14 +238,14 @@ function Profile({ profile, setProfile }) {
               onClick={handle_save}
               disabled={saving}
             >
-              {saving ? "Enregistrement..." : "Enregistrer"}
+              {saving ? "Saving..." : "Save"}
             </button>
 
             <button
               className="student-secondary-btn"
               onClick={() => set_editing(false)}
             >
-              Annuler
+              Cancel
             </button>
           </>
         )}

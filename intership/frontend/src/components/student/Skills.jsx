@@ -1,52 +1,109 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  addSkill,
+  deleteSkill,
+  getSkills,
+} from "../../services/student.service";
 
 function Skills() {
   const [skill_name, set_skill_name] = useState("");
   const [skill_level, set_skill_level] = useState("Beginner");
   const [skills, set_skills] = useState([]);
+  const [message, set_message] = useState("");
+  const [loading, set_loading] = useState(true);
 
-  const handle_add_skill = () => {
+  const load_skills = async () => {
+    try {
+      const response = await getSkills();
+      set_skills(response.data);
+    } catch (error) {
+      console.error("Error loading skills:", error);
+      set_message("Unable to load skills.");
+    } finally {
+      set_loading(false);
+    }
+  };
+
+  useEffect(() => {
+    load_skills();
+  }, []);
+
+  const format_skill_level = (level) => {
+    switch (level) {
+      case "BEGINNER":
+        return "Beginner";
+      case "INTERMEDIATE":
+        return "Intermediate";
+      case "ADVANCED":
+        return "Advanced";
+      case "EXPERT":
+        return "Expert";
+      default:
+        return level;
+    }
+  };
+
+  const handle_add_skill = async () => {
     if (!skill_name.trim()) {
+      set_message("Please enter a skill name.");
       return;
     }
 
-    const new_skill = {
-      id: Date.now(),
-      skill_name,
-      skill_level,
-    };
+    try {
+      set_message("");
 
-    set_skills((prev_skills) => [...prev_skills, new_skill]);
-    set_skill_name("");
-    set_skill_level("Beginner");
+      await addSkill({
+        skill_name,
+        skill_level,
+      });
+
+      set_skill_name("");
+      set_skill_level("Beginner");
+      set_message("Skill added successfully.");
+      load_skills();
+    } catch (error) {
+      console.error("Error adding skill:", error);
+      set_message("Error while adding skill.");
+    }
   };
 
-  const handle_delete_skill = (skill_id) => {
-    set_skills((prev_skills) =>
-      prev_skills.filter((skill) => skill.id !== skill_id)
-    );
+  const handle_delete_skill = async (skill_id) => {
+    try {
+      await deleteSkill(skill_id);
+      set_message("Skill deleted successfully.");
+      load_skills();
+    } catch (error) {
+      console.error("Error deleting skill:", error);
+      set_message("Error while deleting skill.");
+    }
   };
 
   return (
     <div className="student-section-card">
-      <h2>Mes compétences</h2>
+      <h2>My Skills</h2>
       <p className="student-mini-text">
-        Ajoutez vos compétences techniques et leur niveau.
+        Add your technical and professional skills.
       </p>
+
+      {message && (
+        <p style={{ marginTop: "12px", fontWeight: 600, color: "#4f46e5" }}>
+          {message}
+        </p>
+      )}
 
       <div className="student-form-grid" style={{ marginTop: "20px" }}>
         <div className="student-form-group">
-          <label>Compétence</label>
+          <label>Skill Name</label>
           <input
             type="text"
             value={skill_name}
             onChange={(event) => set_skill_name(event.target.value)}
-            placeholder="Ex: React, Spring Boot, SQL..."
+            placeholder="Example: React, Spring Boot, SQL"
           />
         </div>
 
         <div className="student-form-group">
-          <label>Niveau</label>
+          <label>Skill Level</label>
           <select
             value={skill_level}
             onChange={(event) => set_skill_level(event.target.value)}
@@ -61,19 +118,23 @@ function Skills() {
 
       <div className="student-actions">
         <button className="student-primary-btn" onClick={handle_add_skill}>
-          Ajouter la compétence
+          Add Skill
         </button>
       </div>
 
-      {skills.length === 0 ? (
+      {loading ? (
         <div className="student-empty-box" style={{ marginTop: "20px" }}>
-          Aucune compétence ajoutée pour le moment.
+          Loading skills...
+        </div>
+      ) : skills.length === 0 ? (
+        <div className="student-empty-box" style={{ marginTop: "20px" }}>
+          No skills added yet.
         </div>
       ) : (
         <div className="student-skills-list">
           {skills.map((skill) => (
             <div className="student-skill-chip" key={skill.id}>
-              {skill.skill_name} - {skill.skill_level}
+              {skill.skill_name} - {format_skill_level(skill.skill_level)}
               <button
                 onClick={() => handle_delete_skill(skill.id)}
                 style={{
