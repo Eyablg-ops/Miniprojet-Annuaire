@@ -33,7 +33,6 @@ The system analyzes multiple dimensions such as **skills, education, experience,
 ---
 
 ## 🎯 Objectives
-
 - Improve internship matching accuracy  
 - Automate candidate selection  
 - Provide explainable recommendations  
@@ -103,27 +102,27 @@ The AI engine is part of a larger system:
 - AI Engine (FastAPI): Recommendation logic
 
 ## 🔄 Recommendation Flow
-Retrieve student/company/internship data
-Extract and normalize features (skills, education, etc.)
-Convert text into vectors (TF-IDF)
-Compute similarity scores
-Apply weighted scoring
-Rank results
-Return top recommendations
+- Retrieve student/company/internship data
+- Extract and normalize features (skills, education, etc.)
+- Convert text into vectors (TF-IDF)
+- Compute similarity scores
+- Apply weighted scoring
+- Rank results
+- Return top recommendations
 
 ## 🚀 Installation
-Prerequisites
-Python 3.9+
-pip
-Spring Boot backend (port 8080)
+- Prerequisites
+- Python 3.9+
+- pip
+- Spring Boot backend
 
 ## 📦 Dependencies
-fastapi
-uvicorn
-pydantic
-scikit-learn
-numpy
-httpx
-PyPDF2
-pdfplumber
-spacy
+- fastapi
+- uvicorn
+- pydantic
+- scikit-learn
+- numpy
+- httpx
+- PyPDF2
+- pdfplumber
+- spacy
