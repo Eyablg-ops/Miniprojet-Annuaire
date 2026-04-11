@@ -12,7 +12,7 @@ A comprehensive internship management platform connecting students, recruiters, 
 ## 🛠 Technologies Used
 
 ### Backend (Spring Boot)
-- Java 11/17
+- Java 21
 - Spring Boot 2.7.x
 - Spring Security with JWT
 - Spring Data JPA
