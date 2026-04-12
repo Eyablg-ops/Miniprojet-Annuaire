@@ -1,0 +1,157 @@
+/* Signup.css - Ant Design Professional Style */
+
+.signup-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.signup-card {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.signup-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.issat-logo-container {
+  margin-bottom: 20px;
+}
+
+.issat-logo {
+  height: 60px;
+  width: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.signup-title {
+  margin-bottom: 8px !important;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.signup-subtitle {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Student specific styles */
+.student-signup .signup-btn {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  border: none;
+}
+
+.student-signup .signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(240, 147, 251, 0.4);
+}
+
+/* Recruiter specific styles */
+.recruiter-signup .signup-btn {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  border: none;
+}
+
+.recruiter-signup .signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
+}
+
+.signup-footer {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.signup-footer a {
+  color: #1890ff;
+  font-weight: 500;
+}
+
+.signup-footer a:hover {
+  color: #40a9ff;
+}
+
+/* Ant Design overrides */
+.ant-form-item-label > label {
+  font-weight: 500;
+}
+
+.ant-input-affix-wrapper {
+  border-radius: 8px;
+}
+
+.ant-input-affix-wrapper:hover,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.ant-select-selector {
+  border-radius: 8px !important;
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1) !important;
+}
+
+.ant-picker {
+  border-radius: 8px;
+  width: 100%;
+}
+
+.ant-picker:hover,
+.ant-picker-focused {
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .signup-card {
+    padding: 24px;
+  }
+  
+  .issat-logo {
+    height: 50px;
+  }
+  
+  .signup-title {
+    font-size: 22px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .signup-card {
+    padding: 20px;
+  }
+  
+  .signup-title {
+    font-size: 20px !important;
+  }
+}

@@ -1,0 +1,56 @@
+admin@internplatform.com
+admin123
+
+ahmed.benali@issatso.u-sousse.tn
+Student@123
+
+hr@mobirevo.com
+Recruiter@123
+
+
+http://localhost:8000/recommend/student-to-internships
+Student	Major	Best Match	            Expected            Score	Reasoning
+
+Student 1	    Computer Science	    Backend Dev (#6)	70-75%	Java/Spring Boot expert
+Student 2       Software Engineering	Frontend Dev (#3)	65-70%	React/Angular specialist
+Student 3	    Data Science	        AI/ML Intern (#5)	75-85%	Python/ML expert
+Student 4	    Artificial Intelligence	AI/ML Intern (#5)	70-80%	Deep Learning focus
+Student 5	    Cybersecurity	        Any dev role	    25-35%	Mismatch with dev skills
+Student 6	    Web Development	        Full Stack (#1)	    60-70%	React/Node.js skills
+Student 7	    Mobile Development	    Mobile App (#2)	    65-75%	Flutter expert
+Student 8	    Cloud Computing	        Cloud/DevOps (#7,9)	55-65%	AWS/Docker skills
+Student 9	    DevOps	                DevOps (#7)	        60-70%	Jenkins/K8s expert
+Student 10	    Full Stack	            Full Stack (#1,6) 	65-75%	Full stack skills
+
+
+
+http://localhost:8000/recommend/student-to-companies
+Student	    Major	                Top Match	Top Company	    Matched Skills
+
+Student 1	Computer Science	        81%	    Mobirevo	    Java, React, Spring Boot, JavaScript, MongoDB
+Student 2   Software Engineering        67%     ZetaBox         react, angular, node.js, typescript, git
+Student 3	Data Science	            70%	    Key Software	Python, TensorFlow, Machine Learning, Data Viz
+Student 4	Artificial Intelligence     55%     Key Software    Python, Deep Learning, TensorFlow
+
+
+
+http://localhost:8000/recommend/company-to-students
+
+For Company #1 (Mobirevo - Java/Spring Boot/React/MongoDB):
+Rank	Student	        Major	          Match %	Skills Match	Key Insights
+
+1	Ahmed Ben Ali	    Computer Science	70%	    85.7%	    Perfect match - Java, Spring Boot, React skills
+2	Rania Ben Ammar	    Full Stack	        68%	    81.4%	    Excellent full stack skills match
+3	Nour Jemli	        Web Development	    54%	    52.9%	    Good web dev skills
+4	Sarah Mansouri	    Software Eng	        48%	    38.6%	    Moderate match
+5	Malek Saidi	        Mobile Dev	        44%	    28.6%	    Some frontend skills transferable
+
+
+For Company #3 (Key Software - AI/Machine Learning/Python):
+Rank	Student	        Major	          Match %	Skills Match	Key Insights
+
+1	Mohamed Khemiri	    Data Science	    60%	    50.0%	    Best AI/ML match
+2	Ines Bouazizi	    Artificial Intel	54%	    33.3%	    Strong AI background
+3	Ahmed Ben Ali	    Computer Science	39%	    16.7%	    Some Python skills
+4	Rania Ben Ammar	    Full Stack	        39%	    16.7%	    General dev skills
+5	Yassine Gharbi	    Cybersecurity	    37%	    16.7%	    Python skills transferable

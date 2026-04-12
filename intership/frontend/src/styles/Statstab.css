@@ -1,0 +1,77 @@
+/* ═══════════════════════════════════════════════
+   Statstab.css
+   ═══════════════════════════════════════════════ */
+.stats-tab { padding: 2rem; }
+ 
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem; margin-bottom: 2rem;
+}
+ 
+.stat-box {
+  border-radius: 16px; padding: 1.5rem;
+  color: white; text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.stat-box.blue   { background: linear-gradient(135deg, #667eea, #764ba2); }
+.stat-box.green  { background: linear-gradient(135deg, #56ab2f, #a8e063); }
+.stat-box.red    { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.stat-box.purple { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+ 
+.stat-icon   { font-size: 2rem; margin-bottom: 0.5rem; }
+.stat-number { font-size: 2.5rem; font-weight: 700; line-height: 1; }
+.stat-label  { font-size: 0.9rem; opacity: 0.9; margin-top: 0.4rem; }
+ 
+.stats-card {
+  background: white; border-radius: 16px;
+  padding: 1.5rem; margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+.stats-card h3 { margin: 0 0 1.25rem; color: #333; }
+ 
+/* Barres domaines */
+.domain-bars { display: flex; flex-direction: column; gap: 0.75rem; }
+.domain-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 40px;
+  align-items: center; gap: 0.75rem;
+}
+.domain-name  { color: #555; font-size: 0.9rem; }
+.bar-wrapper  { background: #f0f0f0; border-radius: 20px; height: 10px; }
+.bar-fill     {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  border-radius: 20px; height: 100%;
+  transition: width 0.5s ease;
+}
+.domain-count { color: #667eea; font-weight: 600; font-size: 0.9rem; text-align: right; }
+ 
+/* Liste offres stats */
+.offers-stats-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.offer-stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.75rem 1rem; background: #f9f9f9; border-radius: 10px;
+}
+.offer-stat-info  { display: flex; flex-direction: column; gap: 0.2rem; }
+.offer-stat-title { font-weight: 600; color: #333; font-size: 0.95rem; }
+.offer-stat-meta  { color: #888; font-size: 0.8rem; }
+.offer-status-badge {
+  padding: 0.2rem 0.6rem; border-radius: 20px;
+  font-size: 0.75rem; font-weight: 600;
+}
+.offer-status-badge.open   { background: #e8f5e9; color: #388e3c; }
+.offer-status-badge.closed { background: #ffebee; color: #d32f2f; }
+.offer-status-badge.draft  { background: #f5f5f5; color: #757575; }
+ 
+/* Stats globales petites */
+.stats-grid-small {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+.stat-box-small {
+  background: #f5f0ff; border-radius: 12px;
+  padding: 1rem; text-align: center;
+}
+.stat-number-small { display: block; font-size: 1.8rem; font-weight: 700; color: #667eea; }
+.stat-label-small  { display: block; font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
+ 

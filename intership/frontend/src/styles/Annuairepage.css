@@ -1,0 +1,121 @@
+/* ═══════════════════════════════════════════════
+   AnnuairePage.css
+   ═══════════════════════════════════════════════ */
+.annuaire-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.annuaire-header h2 { color: #333; margin-bottom: 0.25rem; }
+.annuaire-subtitle  { color: #888; margin-bottom: 1.5rem; }
+
+.annuaire-filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-icon { position: absolute; left: 10px; }
+.search-input {
+  padding: 0.6rem 2.5rem 0.6rem 2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 280px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: #667eea; }
+.clear-btn {
+  position: absolute; right: 8px;
+  background: none; border: none;
+  cursor: pointer; color: #999; font-size: 0.8rem;
+}
+
+.city-select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.results-count { color: #667eea; font-weight: 600; }
+
+.annuaire-loading {
+  display: flex; align-items: center; gap: 0.75rem;
+  justify-content: center; padding: 3rem; color: #666;
+}
+.mini-spinner {
+  width: 24px; height: 24px;
+  border: 3px solid #f0f0f0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.annuaire-empty {
+  text-align: center; padding: 4rem; color: #888;
+}
+.annuaire-empty span { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+
+/* ── Company Cards ── */
+.companies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.company-card {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+}
+.company-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.company-header {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem; border-bottom: 2px solid #f0f0f0;
+}
+.company-header h3 { color: #333; font-size: 1.1rem; margin: 0; }
+
+.company-status {
+  padding: 0.2rem 0.6rem; border-radius: 20px;
+  font-size: 0.75rem; font-weight: 600; white-space: nowrap;
+}
+.company-status.active  { background: #e8f5e9; color: #388e3c; }
+.company-status.inactive { background: #ffebee; color: #d32f2f; }
+.company-status.pending { background: #fff3e0; color: #f57c00; }
+
+.company-details p {
+  margin: 0.35rem 0; color: #666; font-size: 0.9rem;
+}
+.company-details a { color: #667eea; text-decoration: none; }
+.company-description {
+  color: #888 !important; font-size: 0.85rem !important;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+  margin-top: 0.5rem !important;
+}
+
+.company-services { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.service-tag {
+  background: #e8eaf6; color: #3949ab;
+  padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem;
+}
