@@ -1,15 +1,16 @@
+// ApplyModal.jsx (version améliorée)
 import React, { useState, useEffect } from 'react';
 import { applyToOffer } from '../services/api';
 
 export default function ApplyModal({ offer, onClose }) {
   const [coverLetter, setCoverLetter] = useState('');
-  const [cvFile, setCvFile]           = useState(null);
-  const [drag, setDrag]               = useState(false);
-  const [loading, setLoading]         = useState(false);
-  const [success, setSuccess]         = useState(false);
-  const [error, setError]             = useState('');
+  const [cvFile, setCvFile] = useState(null);
+  const [drag, setDrag] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
-  const email  = localStorage.getItem('email')  || '';
+  const email = localStorage.getItem('email') || '';
   const userId = localStorage.getItem('userId') || '';
 
   useEffect(() => {
@@ -38,31 +39,35 @@ export default function ApplyModal({ offer, onClose }) {
   };
 
   const handleCvFile = (f) => {
-    if (f && validateCv(f)) { setCvFile(f); setError(''); }
+    if (f && validateCv(f)) {
+      setCvFile(f);
+      setError('');
+    }
   };
 
   const handleDrop = (e) => {
-    e.preventDefault(); setDrag(false);
+    e.preventDefault();
+    setDrag(false);
     handleCvFile(e.dataTransfer.files[0]);
   };
 
-const handleSubmit = async () => {
-  setLoading(true);
-  setError('');
-  try {
-    await applyToOffer(offer.id, coverLetter.trim() || null, cvFile);
-    setSuccess(true);
-  } catch (err) {
-    const data = err.response?.data;
-    if (err.response?.status === 400) {
-      setError(typeof data === 'string' ? data : 'Vous avez déjà postulé à cette offre.');
-    } else {
-      setError("Erreur lors de l'envoi. Veuillez réessayer.");
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      await applyToOffer(offer.id, coverLetter.trim() || null, cvFile);
+      setSuccess(true);
+    } catch (err) {
+      const data = err.response?.data;
+      if (err.response?.status === 400) {
+        setError(typeof data === 'string' ? data : 'Vous avez déjà postulé à cette offre.');
+      } else {
+        setError("Erreur lors de l'envoi. Veuillez réessayer.");
+      }
+    } finally {
+      setLoading(false);
     }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleClose = () => {
     setCoverLetter('');
@@ -73,152 +78,93 @@ const handleSubmit = async () => {
   };
 
   return (
-    <div className="sd-overlay" onClick={(e) => e.target === e.currentTarget && handleClose()}>
-      <div className="sd-modal sd-modal-sm">
-
-        {/* ══════════ SUCCÈS ══════════ */}
-        {success ? (
-          <div className="sd-modal-body sd-success-banner">
-            <div className="sd-success-icon">🎉</div>
-            <div className="sd-success-title">Candidature envoyée !</div>
-            <div className="sd-success-sub">
-              Bonne chance pour <strong>{offer.title}</strong>
-              {offer.company?.name ? ` chez ${offer.company.name}` : ''}.
+    <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && !success && handleClose()}>
+      <div className="modal-container modal-container-sm">
+        <div className="modal-header">
+          <div className="modal-header-accent" />
+          <div className="modal-header-content">
+            <div className="modal-icon-wrapper">
+              ✉️
             </div>
-            {cvFile && (
-              <div style={{
-                marginTop: 12, fontSize: '.8rem', color: '#888',
-                background: '#f5f3ff', padding: '6px 14px',
-                borderRadius: 8, display: 'inline-block',
-              }}>
-                📄 CV joint : {cvFile.name}
+            <div className="modal-title-section">
+              <div className="modal-title">Postuler à cette offre</div>
+              <div className="modal-subtitle">
+                {offer.title}
+                {offer.company?.name && ` — ${offer.company.name}`}
               </div>
-            )}
-            <div style={{ marginTop: 20 }}>
-              <button className="sd-modal-btn sd-modal-btn-primary"
-                onClick={handleClose} style={{ minWidth: 120 }}>
+            </div>
+          </div>
+        </div>
+
+        {success ? (
+          <>
+            <div className="modal-body">
+              <div className="modal-success">
+                <div className="modal-success-icon">🎉</div>
+                <div className="modal-success-title">Candidature envoyée !</div>
+                <div className="modal-success-subtitle">
+                  Bonne chance pour <strong>{offer.title}</strong>
+                  {offer.company?.name ? ` chez ${offer.company.name}` : ''}.
+                </div>
+                {cvFile && (
+                  <div className="modal-file-preview" style={{ marginTop: '1rem', textAlign: 'left' }}>
+                    <div className="modal-file-info">
+                      <span>📄</span>
+                      <div>
+                        <div className="modal-file-name">{cvFile.name}</div>
+                        <div className="modal-file-size">{(cvFile.size / 1024).toFixed(0)} Ko</div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="modal-btn modal-btn-primary" onClick={handleClose}>
                 Fermer
               </button>
             </div>
-          </div>
-
+          </>
         ) : (
           <>
-            {/* ── Header ── */}
-            <div className="sd-modal-header">
-              <div className="sd-modal-accent" />
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                <div style={{
-                  width: 38, height: 38, borderRadius: '50%',
-                  background: '#ede9fe', display: 'flex',
-                  alignItems: 'center', justifyContent: 'center', fontSize: 16,
-                }}>✉️</div>
-                <div>
-                  <div className="sd-modal-title" style={{ marginBottom: 2 }}>
-                    Postuler à cette offre
-                  </div>
-                  <div style={{ fontSize: '.8rem', color: '#777' }}>
-                    {offer.title}
-                    {offer.company?.name ? ` — ${offer.company.name}` : ''}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div className="modal-body modal-body-scroll">
+              {error && <div className="modal-error">{error}</div>}
 
-            {/* ── Body ── */}
-            <div className="sd-modal-body">
-
-              {/* Erreur */}
-              {error && (
-                <div style={{
-                  background: '#fee2e2', color: '#b91c1c',
-                  borderRadius: 8, padding: '8px 12px',
-                  fontSize: '.82rem', marginBottom: 14,
-                }}>
-                  ⚠️ {error}
-                </div>
-              )}
-
-              {/* Infos étudiant connecté — lecture seule */}
-              <div style={{
-                background: '#f5f3ff', borderRadius: 10,
-                padding: '12px 14px', marginBottom: 16,
-                border: '1px solid #ede9fe',
-              }}>
-                <div style={{
-                  fontSize: '.68rem', fontWeight: 600, color: '#9e9e9e',
-                  textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 8,
-                }}>
-                  Votre compte
-                </div>
-                <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
-                  <div>
-                    <div style={{ fontSize: '.7rem', color: '#aaa', marginBottom: 2 }}>Email</div>
-                    <div style={{ fontSize: '.85rem', fontWeight: 500, color: '#333' }}>
-                      {email || '—'}
-                    </div>
-                  </div>
-                 
+              <div className="modal-section">
+                <div className="modal-section-title">Informations de candidature</div>
+                <div className="modal-metric-card" style={{ marginBottom: '1rem' }}>
+                  <div className="modal-metric-label">Email du candidat</div>
+                  <div className="modal-metric-value">{email || '—'}</div>
                 </div>
               </div>
 
-              {/* Récap offre */}
-              <div style={{
-                background: '#fafafa', borderRadius: 10,
-                padding: '10px 14px', marginBottom: 16,
-                border: '1px solid rgba(0,0,0,.06)',
-              }}>
-                <div style={{
-                  fontSize: '.68rem', fontWeight: 600, color: '#9e9e9e',
-                  textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 6,
-                }}>
-                  Offre sélectionnée
-                </div>
-                <div style={{ fontSize: '.88rem', fontWeight: 500, color: '#333', marginBottom: 5 }}>
-                  {offer.title}
-                </div>
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                  {offer.type     && <span style={{ fontSize: '.78rem', color: '#666' }}>📋 {offer.type}</span>}
-                  {offer.domain   && <span style={{ fontSize: '.78rem', color: '#666' }}>📂 {offer.domain}</span>}
-                  {offer.location && <span style={{ fontSize: '.78rem', color: '#666' }}>📍 {offer.location}</span>}
-                  {offer.duration && <span style={{ fontSize: '.78rem', color: '#666' }}>⏱️ {offer.duration} mois</span>}
-                </div>
-              </div>
-
-              {/* ── Upload CV ── */}
-              <div style={{ marginBottom: 16 }}>
-                <div className="sd-form-label" style={{ marginBottom: 6 }}>
-                  📄 Joindre votre CV
-                  <span className="sd-form-hint"> — PDF ou Word, max 5 Mo</span>
-                </div>
-
+              <div className="modal-section">
+                <div className="modal-section-title">CV</div>
                 {cvFile ? (
-                  <div className="sd-file-preview">
-                    <div className="sd-file-info">
-                      <span style={{ fontSize: 20 }}>📄</span>
+                  <div className="modal-file-preview">
+                    <div className="modal-file-info">
+                      <span style={{ fontSize: '1.25rem' }}>📄</span>
                       <div>
-                        <div className="sd-file-name">{cvFile.name}</div>
-                        <div className="sd-file-size">
-                          {(cvFile.size / 1024).toFixed(0)} Ko
-                        </div>
+                        <div className="modal-file-name">{cvFile.name}</div>
+                        <div className="modal-file-size">{(cvFile.size / 1024).toFixed(0)} Ko</div>
                       </div>
                     </div>
-                    <button className="sd-file-remove" onClick={() => setCvFile(null)}>
+                    <button className="modal-file-remove" onClick={() => setCvFile(null)}>
                       ✕ Retirer
                     </button>
                   </div>
                 ) : (
                   <label
-                    className={`sd-upload-zone ${drag ? 'drag-over' : ''}`}
+                    className={`modal-upload-zone ${drag ? 'drag-over' : ''}`}
                     onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
                     onDragLeave={() => setDrag(false)}
                     onDrop={handleDrop}
                   >
-                    <div className="sd-upload-icon">📁</div>
-                    <div className="sd-upload-text">
+                    <div className="modal-upload-icon">📁</div>
+                    <div className="modal-upload-text">
                       Glissez votre CV ici ou <span>parcourez</span>
                     </div>
-                    <div className="sd-upload-hint">PDF, DOC, DOCX — max 5 Mo</div>
+                    <div className="modal-upload-hint">PDF, DOC, DOCX — max 5 Mo</div>
                     <input
                       type="file"
                       accept=".pdf,.doc,.docx"
@@ -232,41 +178,36 @@ const handleSubmit = async () => {
                 )}
               </div>
 
-              {/* ── Lettre de motivation ── */}
-              <div className="sd-form-group">
-                <label className="sd-form-label">
+              <div className="modal-form-group">
+                <label className="modal-form-label">
                   Lettre de motivation
-                  <span className="sd-form-hint"> (optionnelle)</span>
+                  <span className="modal-form-hint">(optionnelle)</span>
                 </label>
                 <textarea
+                  className="modal-form-textarea"
                   value={coverLetter}
                   onChange={(e) => setCoverLetter(e.target.value)}
-                  rows={4}
                   maxLength={1000}
                   placeholder="Expliquez pourquoi vous postulez à cette offre, vos motivations et compétences pertinentes..."
                 />
                 <div style={{
-                  fontSize: '.72rem', color: '#bdbdbd',
-                  textAlign: 'right', marginTop: 3,
+                  fontSize: '0.6875rem',
+                  color: '#94a3b8',
+                  textAlign: 'right',
+                  marginTop: '0.375rem'
                 }}>
                   {coverLetter.length}/1000
                 </div>
               </div>
+            </div>
 
-             
-
-              {/* ── Footer ── */}
-              <div className="sd-modal-footer">
-                <button className="sd-modal-btn sd-modal-btn-cancel"
-                  onClick={handleClose} disabled={loading}>
-                  Annuler
-                </button>
-                <button className="sd-modal-btn sd-modal-btn-primary"
-                  onClick={handleSubmit} disabled={loading}>
-                  {loading ? '⏳ Envoi...' : '✉️ Envoyer ma candidature'}
-                </button>
-              </div>
-
+            <div className="modal-footer">
+              <button className="modal-btn modal-btn-secondary" onClick={handleClose} disabled={loading}>
+                Annuler
+              </button>
+              <button className="modal-btn modal-btn-primary" onClick={handleSubmit} disabled={loading}>
+                {loading ? '⏳ Envoi...' : '✉️ Envoyer'}
+              </button>
             </div>
           </>
         )}

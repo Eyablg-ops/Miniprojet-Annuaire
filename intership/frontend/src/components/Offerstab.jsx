@@ -15,15 +15,17 @@ const emptyForm = {
   duration: '', type: '', requiredSkills: '', status: 'OPEN', deadline: '',
 };
 
+const STATUS_LABEL = { OPEN: 'Ouvert', CLOSED: 'Fermé', DRAFT: 'Brouillon' };
+
 const OffersTab = () => {
   const companyId = localStorage.getItem('companyId');
-  const [offers, setOffers]           = useState([]);
-  const [loading, setLoading]         = useState(false);
-  const [showForm, setShowForm]       = useState(false);
-  const [editOffer, setEditOffer]     = useState(null);
-  const [form, setForm]               = useState(emptyForm);
-  const [error, setError]             = useState('');
-  const [success, setSuccess]         = useState('');
+  const [offers, setOffers]                   = useState([]);
+  const [loading, setLoading]                 = useState(false);
+  const [showForm, setShowForm]               = useState(false);
+  const [editOffer, setEditOffer]             = useState(null);
+  const [form, setForm]                       = useState(emptyForm);
+  const [error, setError]                     = useState('');
+  const [success, setSuccess]                 = useState('');
   const [manualCompanyId, setManualCompanyId] = useState('');
 
   const effectiveCompanyId = companyId || manualCompanyId;
@@ -37,7 +39,7 @@ const OffersTab = () => {
     try {
       const res = await getOffersByCompany(effectiveCompanyId);
       setOffers(res.data);
-    } catch (err) {
+    } catch {
       setError('Erreur lors du chargement des offres');
     } finally {
       setLoading(false);
@@ -60,15 +62,15 @@ const OffersTab = () => {
   const openEdit = (offer) => {
     setEditOffer(offer);
     setForm({
-      title: offer.title || '',
-      description: offer.description || '',
-      domain: offer.domain || '',
-      location: offer.location || '',
-      duration: offer.duration || '',
-      type: offer.type || '',
+      title:          offer.title          || '',
+      description:    offer.description    || '',
+      domain:         offer.domain         || '',
+      location:       offer.location       || '',
+      duration:       offer.duration       || '',
+      type:           offer.type           || '',
       requiredSkills: offer.requiredSkills || '',
-      status: offer.status || 'OPEN',
-      deadline: offer.deadline || '',
+      status:         offer.status         || 'OPEN',
+      deadline:       offer.deadline       || '',
     });
     setShowForm(true);
     setError('');
@@ -94,10 +96,10 @@ const OffersTab = () => {
 
       if (editOffer) {
         await updateOffer(editOffer.id, payload);
-        setSuccess('✅ Offre modifiée avec succès');
+        setSuccess('Offre modifiée avec succès');
       } else {
         await createOffer(payload);
-        setSuccess('✅ Offre publiée avec succès');
+        setSuccess('Offre publiée avec succès');
       }
       setShowForm(false);
       loadOffers();
@@ -111,7 +113,7 @@ const OffersTab = () => {
     if (!window.confirm('Supprimer cette offre ?')) return;
     try {
       await deleteOffer(id);
-      setSuccess('✅ Offre supprimée');
+      setSuccess('Offre supprimée');
       loadOffers();
     } catch (err) {
       const data = err.response?.data;
@@ -121,15 +123,20 @@ const OffersTab = () => {
 
   return (
     <div className="offers-tab">
+
+      {/* ── En-tête ── */}
       <div className="tab-header">
-        <h2>📋 Mes Offres de Stage</h2>
-        <button className="action-btn" onClick={openCreate}>➕ Publier une offre</button>
+        <h2>
+          <span className="header-icon">📋</span>
+          Mes offres de stage
+        </h2>
+        <button className="action-btn" onClick={openCreate}>+ Publier une offre</button>
       </div>
 
-      {/* ── Avertissement si companyId manquant ── */}
+      {/* ── Avertissement ID manquant ── */}
       {!companyId && (
         <div className="warning-box">
-          ⚠️ ID entreprise non détecté. Saisissez-le manuellement :
+          ID entreprise non détecté. Saisissez-le manuellement :
           <input
             type="number"
             placeholder="ID de votre entreprise (ex: 1)"
@@ -138,9 +145,7 @@ const OffersTab = () => {
             className="manual-id-input"
           />
           {manualCompanyId && (
-            <button className="action-btn-small" onClick={loadOffers}>
-              Charger
-            </button>
+            <button className="action-btn-small" onClick={loadOffers}>Charger</button>
           )}
         </div>
       )}
@@ -148,12 +153,12 @@ const OffersTab = () => {
       {error   && <div className="error-message">{error}</div>}
       {success && <div className="success-message">{success}</div>}
 
-      {/* ── Formulaire Overlay ── */}
+      {/* ── Formulaire overlay ── */}
       {showForm && (
         <div className="offer-form-overlay">
           <div className="offer-form-card">
             <div className="form-card-header">
-              <h3>{editOffer ? '✏️ Modifier l\'offre' : '➕ Nouvelle offre'}</h3>
+              <h3>{editOffer ? 'Modifier l\'offre' : 'Nouvelle offre'}</h3>
               <button className="close-btn" onClick={() => setShowForm(false)}>✕</button>
             </div>
 
@@ -198,7 +203,7 @@ const OffersTab = () => {
                 <label>Description</label>
                 <textarea name="description" value={form.description}
                   onChange={handleChange} rows={3}
-                  placeholder="Décrivez le stage..." />
+                  placeholder="Décrivez le stage…" />
               </div>
 
               <div className="form-group">
@@ -217,9 +222,9 @@ const OffersTab = () => {
                 <div className="form-group">
                   <label>Statut</label>
                   <select name="status" value={form.status} onChange={handleChange}>
-                    <option value="OPEN">OPEN</option>
-                    <option value="CLOSED">CLOSED</option>
-                    <option value="DRAFT">DRAFT</option>
+                    <option value="OPEN">Ouvert</option>
+                    <option value="CLOSED">Fermé</option>
+                    <option value="DRAFT">Brouillon</option>
                   </select>
                 </div>
               </div>
@@ -239,15 +244,15 @@ const OffersTab = () => {
 
       {/* ── Liste des offres ── */}
       {loading ? (
-        <p className="loading-text">Chargement...</p>
+        <p className="loading-text">Chargement…</p>
       ) : !effectiveCompanyId ? (
         <div className="empty-state">
-          <span>🏢</span>
+          <span className="empty-icon">🏢</span>
           <p>Veuillez saisir votre ID entreprise ci-dessus</p>
         </div>
       ) : offers.length === 0 ? (
         <div className="empty-state">
-          <span>📭</span>
+          <span className="empty-icon">📭</span>
           <p>Aucune offre publiée pour l'instant</p>
           <button className="action-btn" onClick={openCreate}>Publier ma première offre</button>
         </div>
@@ -263,7 +268,7 @@ const OffersTab = () => {
                   </span>
                 </div>
                 <span className={`offer-status ${offer.status?.toLowerCase()}`}>
-                  {offer.status}
+                  {STATUS_LABEL[offer.status] ?? offer.status}
                 </span>
               </div>
 
@@ -276,12 +281,12 @@ const OffersTab = () => {
               )}
 
               {offer.deadline && (
-                <p className="offer-deadline">📅 Date limite : {offer.deadline}</p>
+                <p className="offer-deadline">Date limite : {offer.deadline}</p>
               )}
 
               <div className="offer-actions">
-                <button className="edit-btn" onClick={() => openEdit(offer)}>✏️ Modifier</button>
-                <button className="delete-btn" onClick={() => handleDelete(offer.id)}>🗑️ Supprimer</button>
+                <button className="edit-btn" onClick={() => openEdit(offer)}>✏ Modifier</button>
+                <button className="delete-btn" onClick={() => handleDelete(offer.id)}>✕ Supprimer</button>
               </div>
             </div>
           ))}
