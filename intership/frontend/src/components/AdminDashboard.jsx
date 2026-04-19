@@ -30,7 +30,7 @@ const AdminDashboard = () => {
       return;
     }
 
-    setAdmin({ email });
+    setAdmin({ email, userType });
     loadData();
   }, [navigate]);
 
@@ -48,6 +48,14 @@ const AdminDashboard = () => {
       setStats(statsRes.data);
       setUsers(usersRes.data);
       setUserStats(userStatsRes.data);
+
+      const currentAdminEmail = localStorage.getItem('email');
+      const currentAdminUser = usersRes.data.find(
+        (user) => user.email === currentAdminEmail && user.userType === 'ADMIN'
+      );
+      if (currentAdminUser) {
+        setAdmin(currentAdminUser);
+      }
     } catch (err) {
       console.error(err);
       alert('Erreur de chargement');
@@ -69,6 +77,10 @@ const AdminDashboard = () => {
   };
 
   const handleToggleUserStatus = async (userId, currentStatus) => {
+    if (userId === admin?.id) {
+      alert('Vous ne pouvez pas modifier votre propre statut.');
+      return;
+    }
     const newStatus = currentStatus === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
     const action = newStatus === 'ACTIVE' ? 'activer' : 'désactiver';
     
@@ -84,6 +96,10 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteUser = async (userId) => {
+    if (userId === admin?.id) {
+      alert('Vous ne pouvez pas supprimer votre propre compte administrateur.');
+      return;
+    }
     if (!window.confirm('Supprimer définitivement cet utilisateur ? Cette action est irréversible.')) return;
 
     try {
@@ -265,13 +281,17 @@ const AdminDashboard = () => {
                   >
                     {user.active ? '🔒' : '🔓'}
                   </button>
-                  <button
-                    className="action-btn-small delete"
-                    onClick={() => handleDeleteUser(user.id)}
-                    title="Supprimer"
-                  >
-                    🗑️
-                  </button>
+                    {user.id !== admin?.id ? (
+                      <button
+                        className="action-btn-small delete"
+                        onClick={() => handleDeleteUser(user.id)}
+                        title="Supprimer"
+                      >
+                        🗑️
+                      </button>
+                    ) : (
+                      <span className="self-label">Vous</span>
+                    )}
                 </td>
               </tr>
             ))}
@@ -356,8 +376,8 @@ const AdminDashboard = () => {
       {/* NAVBAR */}
       <nav className="dashboard-nav">
         <div className="nav-brand">
-          <span className="brand-icon">👑</span>
-          <span className="brand-name">Admin Portal</span>
+          <span className="brand-icon"></span>
+          <span className="brand-name">Admin</span>
         </div>
 
         <div className="nav-tabs">
