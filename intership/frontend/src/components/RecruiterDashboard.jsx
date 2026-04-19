@@ -22,7 +22,7 @@ const RecruiterDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser]           = useState(null);
   const [loading, setLoading]     = useState(true);
-  const [activeTab, setActiveTab] = useState('offers');
+  const [activeTab, setActiveTab] = useState('stats');
   const [companyId, setCompanyId] = useState(null);
 
   useEffect(() => {
@@ -78,7 +78,7 @@ const RecruiterDashboard = () => {
         }
         return <CompanyStudentRecommendations companyId={companyId} />;
       default:
-        return <OffersTab />;
+        return <StatsTab />;
     }
   };
 

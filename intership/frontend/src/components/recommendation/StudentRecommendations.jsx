@@ -106,8 +106,8 @@ const StudentRecommendations = ({ onApply }) => {
     return (
       <div className="recommendations-container">
         <div className="recommendations-header">
-          <h1>🎯 Personalized Internship Recommendations</h1>
-          <p>AI-powered matches based on your profile, skills, and preferences</p>
+        <h1>Recommended internship offers</h1>
+        <p>Based on your profile, skills and preferences.</p>
         </div>
         <div className="empty-state">
           <p>No internship recommendations found. Complete your profile to get better matches!</p>

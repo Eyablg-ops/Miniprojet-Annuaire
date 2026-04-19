@@ -80,8 +80,8 @@ const StudentCompanyRecommendations = () => {
     return (
       <div className="recommendations-container">
         <div className="recommendations-header">
-          <h1>🏢 Recommended Companies</h1>
-          <p>Based on your skills and profile</p>
+         <h1>Recommended companies</h1>
+          <p>Based on your profile, skills and technical relevance.</p>
         </div>
         <div className="empty-state">
           <p>No company recommendations found. Complete your profile to get better matches!</p>

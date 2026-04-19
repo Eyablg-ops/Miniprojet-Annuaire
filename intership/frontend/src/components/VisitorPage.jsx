@@ -91,7 +91,7 @@ const VisitorPage = () => {
                 <span>Stage & Alternance</span>
               </div>
               <h1 className="hero-title">
-                Trouvez votre <span>stage parfait</span> <br /> et propulsez votre carrière
+                Trouvez votre <span>stage </span> <br /> et propulsez votre carrière
               </h1>
               <p className="hero-desc">
                 Connectez-vous aux meilleures entreprises de la région Sousse, bénéficiez d’un matching intelligent 
