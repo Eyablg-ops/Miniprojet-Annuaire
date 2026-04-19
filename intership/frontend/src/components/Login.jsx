@@ -34,7 +34,7 @@ const Login = () => {
       if (userType === 'STUDENT') {
         try {
           const studentResponse = await axios.get(
-            `http://localhost:8080/api/students/email/${email}`,
+            `http://localhost:8080/api/student/email/${email}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           localStorage.setItem('studentId', studentResponse.data.id);

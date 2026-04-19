@@ -1,6 +1,6 @@
 .dashboard-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #6190ba 100%);
 }
 
 .dashboard-nav {
@@ -114,7 +114,7 @@
 }
 
 .stat-box {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #6190ba 100%);
   padding: 1.5rem;
   border-radius: 15px;
   text-align: center;
@@ -271,7 +271,7 @@
 
 .save-profile-btn {
   padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #6190ba 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -295,7 +295,7 @@
 .create-btn,
 .browse-btn {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #6190ba 100%);
   color: white;
   border: none;
   border-radius: 10px;
