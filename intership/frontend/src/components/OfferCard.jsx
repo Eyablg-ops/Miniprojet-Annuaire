@@ -1,6 +1,7 @@
-    import React from 'react';
+import React from 'react';
+import '../styles/OfferCard.css';
 
-    export default function OfferCard({ offer, onDetail, onApply }) {
+export default function OfferCard({ offer, onDetail, onApply }) {
     const skills = offer.requiredSkills
         ? offer.requiredSkills.split(',').map(s => s.trim()).filter(Boolean)
         : [];

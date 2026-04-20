@@ -1,6 +1,6 @@
-// ApplyModal.jsx (version améliorée)
 import React, { useState, useEffect } from 'react';
 import { applyToOffer } from '../services/api';
+import '../styles/ApplyModal.css';
 
 export default function ApplyModal({ offer, onClose }) {
   const [coverLetter, setCoverLetter] = useState('');
@@ -177,7 +177,7 @@ export default function ApplyModal({ offer, onClose }) {
                   </label>
                 )}
               </div>
-
+                <br/>
               <div className="modal-form-group">
                 <label className="modal-form-label">
                   Lettre de motivation

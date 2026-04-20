@@ -5,6 +5,7 @@ const StudentCompanyRecommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCompany, setSelectedCompany] = useState(null);
 
   useEffect(() => {
     fetchRecommendations();
@@ -54,6 +55,39 @@ const StudentCompanyRecommendations = () => {
     return '#9e9e9e';
   };
 
+  const handleViewCompany = (company) => {
+    setSelectedCompany(company);
+  };
+
+  const handleFollowCompany = async (companyId, companyName) => {
+    try {
+      const studentId = localStorage.getItem('studentId') || localStorage.getItem('userId');
+      const token = localStorage.getItem('token');
+      
+      // Example API call to follow a company (adjust endpoint as needed)
+      const response = await fetch('http://localhost:8080/api/student/follow-company', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          studentId: parseInt(studentId),
+          companyId: companyId
+        })
+      });
+      
+      if (response.ok) {
+        alert(`You are now following ${companyName}!`);
+      } else {
+        alert('Failed to follow company. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error following company:', error);
+      alert('Failed to follow company. Please try again.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="recommendations-container">
@@ -80,7 +114,7 @@ const StudentCompanyRecommendations = () => {
     return (
       <div className="recommendations-container">
         <div className="recommendations-header">
-         <h1>Recommended companies</h1>
+          <h2>Recommended Companies</h2>
           <p>Based on your profile, skills and technical relevance.</p>
         </div>
         <div className="empty-state">
@@ -94,7 +128,7 @@ const StudentCompanyRecommendations = () => {
   return (
     <div className="recommendations-container">
       <div className="recommendations-header">
-        <h1>🏢 Recommended Companies</h1>
+        <h2>🏢 Recommended Companies</h2>
         <p>Based on your skills and profile</p>
       </div>
 
@@ -151,12 +185,109 @@ const StudentCompanyRecommendations = () => {
             </div>
             
             <div className="card-actions">
-              <button className="view-company-btn">View Company</button>
-              <button className="follow-btn">Follow Company</button>
+              <button className="view-company-btn" onClick={() => handleViewCompany(company)}>
+                View Company
+              </button>
+              <button className="follow-btn" onClick={() => handleFollowCompany(company.item_id, company.company_name)}>
+                Follow Company
+              </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Company Details Modal */}
+      {selectedCompany && (
+        <div className="modal-overlay" onClick={() => setSelectedCompany(null)}>
+          <div className="modal-content company-modal" onClick={(e) => e.stopPropagation()}>
+            <h2>{selectedCompany.company_name}</h2>
+            
+            <div className="modal-details">
+              <div className="detail-row">
+                <strong>📍 Location:</strong>
+                <span>{selectedCompany.company_city || 'Not specified'}</span>
+              </div>
+              <div className="detail-row">
+                <strong>🏢 Type:</strong>
+                <span>{selectedCompany.company_type || 'Not specified'}</span>
+              </div>
+              <div className="detail-row">
+                <strong>📊 Match Score:</strong>
+                <span style={{ 
+                  color: getMatchColor(selectedCompany.match_percentage),
+                  fontWeight: 'bold'
+                }}>
+                  {selectedCompany.match_percentage}%
+                </span>
+              </div>
+            </div>
+
+            <div className="modal-description">
+              <strong>About the Company:</strong>
+              <p>{selectedCompany.company_services || 'No description available.'}</p>
+            </div>
+
+            <div className="modal-skills">
+              <strong>🎯 Skills Match Breakdown:</strong>
+              <div className="score-details">
+                <div className="detail-item">
+                  <span className="detail-label">Skills Match:</span>
+                  <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: `${selectedCompany.details?.skills_match || 0}%` }}>
+                      {selectedCompany.details?.skills_match || 0}%
+                    </div>
+                  </div>
+                </div>
+                <div className="detail-item">
+                  <span className="detail-label">Tech Relevance:</span>
+                  <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: `${selectedCompany.details?.tech_relevance || 0}%` }}>
+                      {selectedCompany.details?.tech_relevance || 0}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {selectedCompany.details?.matched_skills?.length > 0 && (
+              <div className="modal-matched-skills">
+                <strong>✓ Matched Skills:</strong>
+                <div className="skills-tags">
+                  {selectedCompany.details.matched_skills.map((skill, i) => (
+                    <span key={i} className="skill-tag matched">{skill}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {selectedCompany.details?.missing_skills?.length > 0 && (
+              <div className="modal-missing-skills">
+                <strong>⚠️ Skills to Develop:</strong>
+                <div className="skills-tags">
+                  {selectedCompany.details.missing_skills.map((skill, i) => (
+                    <span key={i} className="skill-tag missing">{skill}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="modal-actions">
+              <button className="close-btn" onClick={() => setSelectedCompany(null)}>
+                Close
+              </button>
+              <button 
+                className="follow-btn" 
+                onClick={() => {
+                  handleFollowCompany(selectedCompany.item_id, selectedCompany.company_name);
+                  setSelectedCompany(null);
+                }}
+              >
+                Follow Company
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

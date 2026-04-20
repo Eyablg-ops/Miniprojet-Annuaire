@@ -4,7 +4,6 @@ import Loading from '../ui/Loading';
 import OffersTab       from './Offerstab';
 import ApplicationsTab from './Applicationstab';
 import StatsTab        from './Statstab';
-import AnnuairePage    from './Annuairepage';
 import CompanyProfileTab from './CompanyProfileTab';
 import CompanyStudentRecommendations from './recommendation/CompanyStudentRecommendations';
 import '../styles/Recruiterdashboard.css';
@@ -14,7 +13,6 @@ const TABS = [
   { key: 'offers',          label: '📋 Mes Offres'        },
   { key: 'applications',    label: '📥 Candidatures'      },
   { key: 'stats',           label: '📊 Statistiques'      },
-  { key: 'annuaire',        label: '🏢 Annuaire Sociétés' },
   { key: 'recommendations', label: '🎯 AI Talent Finder'  },
 ];
 
@@ -56,7 +54,6 @@ const RecruiterDashboard = () => {
       case 'offers':        return <OffersTab />;
       case 'applications':  return <ApplicationsTab />;
       case 'stats':         return <StatsTab />;
-      case 'annuaire':      return <AnnuairePage />;
       case 'profile':       return <CompanyProfileTab />;
       case 'recommendations':
         if (!companyId) {
@@ -87,7 +84,7 @@ const RecruiterDashboard = () => {
   return (
     <div className="dashboard-container">
 
-      {/* ── SIDEBAR VERTICALE ── */}
+      {/* SIDEBAR VERTICALE */}
       <nav className="dashboard-nav">
 
         {/* Logo / Brand */}
@@ -119,7 +116,7 @@ const RecruiterDashboard = () => {
 
       </nav>
 
-      {/* ── CONTENU PRINCIPAL ── */}
+      {/* CONTENU PRINCIPAL */}
       <div className="dashboard-main">
         {renderContent()}
       </div>

@@ -1,5 +1,5 @@
-// OfferDetailModal.jsx (version améliorée)
 import React from 'react';
+import '../styles/OfferDetailModal.css';
 
 export default function OfferDetailModal({ offer, onClose, onApply }) {
   if (!offer) return null;

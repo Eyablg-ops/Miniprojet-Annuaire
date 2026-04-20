@@ -1,0 +1,446 @@
+/* OfferCard.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Card Container */
+.oc-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.oc-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.oc-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.oc-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Header Section */
+.oc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.oc-type {
+  display: inline-block;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.oc-status {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.oc-status-active {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.oc-status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.oc-status-closed {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.oc-status-draft {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.oc-status-unknown {
+  background: #edf2f7;
+  color: #718096;
+}
+
+/* Title */
+.oc-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Company */
+.oc-company {
+  font-size: 14px;
+  color: #667eea;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Divider */
+.oc-divider {
+  margin: 16px 0;
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+}
+
+/* Meta Information */
+.oc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.oc-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #4a5568;
+  background: #f7fafc;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.oc-meta-item:hover {
+  background: #edf2f7;
+  transform: translateY(-1px);
+}
+
+.oc-meta-icon {
+  font-size: 14px;
+}
+
+/* Description */
+.oc-desc {
+  font-size: 14px;
+  color: #718096;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 63px;
+}
+
+/* Skills Section */
+.oc-skills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-top: 8px;
+}
+
+.oc-skill-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a5568;
+  margin-right: 4px;
+}
+
+.oc-skill-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+  color: #5b21b6;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.oc-skill-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(91, 33, 182, 0.2);
+}
+
+/* Actions Buttons */
+.oc-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.oc-btn {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.oc-btn-outline {
+  background: transparent;
+  border: 2px solid #e2e8f0;
+  color: #4a5568;
+}
+
+.oc-btn-outline:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+  transform: translateY(-2px);
+}
+
+.oc-btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+.oc-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.oc-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .oc-card {
+    padding: 20px;
+  }
+
+  .oc-title {
+    font-size: 18px;
+  }
+
+  .oc-meta {
+    gap: 8px;
+  }
+
+  .oc-meta-item {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .oc-desc {
+    font-size: 13px;
+    min-height: auto;
+  }
+
+  .oc-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .oc-actions {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .oc-card {
+    padding: 16px;
+  }
+
+  .oc-header {
+    margin-bottom: 12px;
+  }
+
+  .oc-type {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+
+  .oc-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .oc-company {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .oc-divider {
+    margin: 12px 0;
+  }
+
+  .oc-meta {
+    gap: 6px;
+  }
+
+  .oc-meta-item {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .oc-skills {
+    margin-bottom: 16px;
+  }
+
+  .oc-skill-chip {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .oc-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .oc-btn {
+    width: 100%;
+  }
+}
+
+/* Animation for card appearance */
+.oc-card {
+  animation: cardFadeIn 0.5s ease-out backwards;
+}
+
+.oc-card:nth-child(1) { animation-delay: 0.05s; }
+.oc-card:nth-child(2) { animation-delay: 0.1s; }
+.oc-card:nth-child(3) { animation-delay: 0.15s; }
+.oc-card:nth-child(4) { animation-delay: 0.2s; }
+.oc-card:nth-child(5) { animation-delay: 0.25s; }
+.oc-card:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading state for buttons */
+.oc-btn-loading {
+  position: relative;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.oc-btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: buttonSpin 0.8s linear infinite;
+}
+
+@keyframes buttonSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Focus styles for accessibility */
+.oc-btn:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.oc-card:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* Tooltip for skills if needed */
+.oc-skill-chip[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+.oc-skill-chip[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: #1a202c;
+  color: white;
+  font-size: 10px;
+  white-space: nowrap;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  z-index: 10;
+}
+
+/* Print styles */
+@media print {
+  .oc-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ddd;
+    padding: 16px;
+  }
+
+  .oc-actions {
+    display: none;
+  }
+
+  .oc-card::before {
+    display: none;
+  }
+}

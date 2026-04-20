@@ -53,7 +53,10 @@
   gap: 6px;
   transition: background 0.15s;
 }
-.action-btn:hover { background: #0C447C; }
+
+.action-btn:hover { 
+  background: #0C447C !important; 
+}
 
 /* ─── Messages ─── */
 .error-message {
@@ -109,7 +112,7 @@
   font-size: 12px;
   font-weight: 500;
 }
-.action-btn-small:hover { background: #0C447C; }
+.action-btn-small:hover { background: #0C447C !important; }
 
 /* ─── Overlay formulaire ─── */
 .offer-form-overlay {

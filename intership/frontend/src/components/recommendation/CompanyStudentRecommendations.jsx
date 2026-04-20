@@ -184,7 +184,7 @@ const CompanyStudentRecommendations = ({ companyId }) => {
     return (
       <div className="recommendations-container">
         <div className="recommendations-header">
-          <h1>🎯 Candidates Who Applied</h1>
+          <h1>Candidates Who Applied</h1>
           <p>Students who have applied to your offers</p>
         </div>
         <div className="empty-state">
@@ -198,7 +198,7 @@ const CompanyStudentRecommendations = ({ companyId }) => {
   return (
     <div className="recommendations-container">
       <div className="recommendations-header">
-        <h1>🎯 Candidates Who Applied</h1>
+        <h2>Candidates Who Applied</h2>
         <p>AI-powered ranking of students who applied to your offers</p>
         {companyId && <p className="company-id-info">Company ID: {companyId}</p>}
       </div>

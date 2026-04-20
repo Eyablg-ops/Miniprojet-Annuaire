@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../ui/Loading';
+import AnnuairePage from './Annuairepage';
 import '../styles/AdminDashboard.css';
 
 import { getCompanies, deleteCompany, getCompanyStats } from '../services/api';
@@ -11,7 +12,7 @@ const AdminDashboard = () => {
 
   const [admin, setAdmin] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('companies'); // 'companies' or 'users'
+  const [activeTab, setActiveTab] = useState('companies'); 
 
   const [companies, setCompanies] = useState([]);
   const [users, setUsers] = useState([]);
@@ -191,7 +192,7 @@ const AdminDashboard = () => {
             </div>
 
             <div className="action-buttons">
-              <button className="action-btn" onClick={() => window.open(company.website, '_blank')}>
+              <button className="action-btn act" onClick={() => window.open(company.website, '_blank')}>
                 🌐 Site web
               </button>
               <button
@@ -368,6 +369,10 @@ const AdminDashboard = () => {
     </>
   );
 
+  const renderAnnuaireTab = () => (
+    <AnnuairePage />
+  );
+
   if (loading) return <Loading />;
 
   return (
@@ -386,6 +391,12 @@ const AdminDashboard = () => {
             onClick={() => setActiveTab('companies')}
           >
             🏢 Entreprises
+          </button>
+          <button
+            className={`nav-tab ${activeTab === 'annuaire' ? 'active' : ''}`}
+            onClick={() => setActiveTab('annuaire')}
+          >
+            📋 Annuaire
           </button>
           <button
             className={`nav-tab ${activeTab === 'users' ? 'active' : ''}`}
@@ -410,7 +421,7 @@ const AdminDashboard = () => {
         <div className="quick-actions">
           <h3>Actions rapides</h3>
           <div className="action-buttons">
-            <button className="action-btn" onClick={loadData}>
+            <button className="action-btn act" onClick={loadData}>
               🔄 Actualiser
             </button>
           </div>
@@ -419,6 +430,7 @@ const AdminDashboard = () => {
         {/* CONTENT */}
         {activeTab === 'companies' && renderCompaniesTab()}
         {activeTab === 'users' && renderUsersTab()}
+        {activeTab === 'annuaire' && renderAnnuaireTab()}
 
       </div>
     </div>

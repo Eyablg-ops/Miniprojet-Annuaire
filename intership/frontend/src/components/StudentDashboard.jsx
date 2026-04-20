@@ -250,7 +250,7 @@ const StudentDashboard = () => {
           </div>
 
           <div className="student-section-card">
-            <h3>🎯 AI Recommendations</h3>
+            <h3>AI Recommendations</h3>
             <p className="student-mini-text">
               Get personalized internship and company recommendations based on
               your skills and profile.
