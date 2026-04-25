@@ -94,6 +94,10 @@
   border-top: 5px solid #3c3c3c;
 }
 
+.enseignant-signup {
+  border-top: 5px solid #8b5cf6;
+}
+
 /* Header */
 .signup-header {
   text-align: center;
@@ -140,6 +144,13 @@
 
 .recruiter-signup .signup-title {
   background: linear-gradient(135deg, #000000, #3c3c3c);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.enseignant-signup .signup-title {
+  background: linear-gradient(135deg, #6b21a8, #8b5cf6);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -259,6 +270,19 @@
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(60, 60, 60, 0.3) !important;
+  border-color: transparent !important;
+}
+
+.enseignant-signup .signup-btn {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6b21a8 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.enseignant-signup .signup-btn:hover {
+  background: linear-gradient(135deg, #6b21a8 0%, #8b5cf6 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4) !important;
   border-color: transparent !important;
 }
 

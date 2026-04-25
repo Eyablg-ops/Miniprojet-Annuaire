@@ -1,5 +1,6 @@
 package grp.projet.services;
 
+import grp.projet.DTOs.EnseignantRegisterRequest;
 import grp.projet.DTOs.LoginRequest;
 import grp.projet.DTOs.RecruiterRegisterRequest;
 import grp.projet.DTOs.StudentRegisterRequest;
@@ -26,6 +27,9 @@ public class AuthService {
 
     @Autowired
     private AdminRepository adminRepository;
+
+    @Autowired
+    private EnseignantRepository enseignantRepository;
 
     @Autowired
     private CompanyRepository annuaireCompanyRepository;
@@ -93,6 +97,33 @@ public class AuthService {
         String token = jwtService.authenticateAndGenerateToken(request.getEmail(), request.getPassword(), "RECRUITER");
 
         return new AuthResponse(token, "RECRUITER", user.getId(), user.getEmail());
+    }
+
+    @Transactional
+    public AuthResponse registerEnseignant(EnseignantRegisterRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already registered");
+        }
+
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setUserType(UserType.ENSEIGNANT);
+        user = userRepository.save(user);
+
+        Enseignant enseignant = new Enseignant();
+        enseignant.setUser(user);
+        enseignant.setFirstName(request.getFirstName());
+        enseignant.setLastName(request.getLastName());
+        enseignant.setPhone(request.getPhone());
+        enseignant.setDepartment(request.getDepartment());
+        enseignant.setSpecialization(request.getSpecialization());
+        enseignant.setOffice(request.getOffice());
+        enseignant = enseignantRepository.save(enseignant);
+
+        String token = jwtService.authenticateAndGenerateToken(request.getEmail(), request.getPassword(), "ENSEIGNANT");
+
+        return new AuthResponse(token, "ENSEIGNANT", user.getId(), user.getEmail());
     }
 
     public AuthResponse adminLogin(LoginRequest request) {

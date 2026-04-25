@@ -618,3 +618,45 @@
     font-size: 1.55rem;
   }
 }
+
+/* Application Status Badges */
+.status-pending {
+  display: inline-block;
+  background: #fef3c7;
+  color: #d97706;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-accepted {
+  display: inline-block;
+  background: #d1fae5;
+  color: #059669;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-rejected {
+  display: inline-block;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-reviewed {
+  display: inline-block;
+  background: #dbeafe;
+  color: #2563eb;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+

@@ -10,6 +10,7 @@ const Offers = () => {
   const [loading, set_loading]         = useState(true);
   const [fetching, set_fetching]       = useState(false);
   const [offers, set_offers]           = useState([]);
+  const [applications, setApplications] = useState([]); // Add applications state
   const [search, set_search]           = useState('');
   const [domaine, set_domaine]         = useState('');
   const [ville, set_ville]             = useState('');
@@ -18,14 +19,40 @@ const Offers = () => {
   const [apply_open, set_apply_open]   = useState(false);
 
   useEffect(() => {
-    fetch_offers().then(() => set_loading(false));
+    const loadData = async () => {
+      await Promise.all([fetch_offers(), fetchApplications()]);
+      set_loading(false);
+    };
+    loadData();
   }, []);
 
   useEffect(() => {
     if (loading) return;
-    const timer = setTimeout(fetch_offers, 400);
+    const timer = setTimeout(() => {
+      fetch_offers();
+    }, 400);
     return () => clearTimeout(timer);
   }, [search, domaine, ville]);
+
+  const fetchApplications = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:8080/api/postulations/my', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setApplications(data);
+        console.log('Applications loaded:', data);
+      }
+    } catch (error) {
+      console.error('Error fetching applications:', error);
+    }
+  };
 
   const fetch_offers = async () => {
     set_fetching(true);
@@ -41,8 +68,33 @@ const Offers = () => {
     }
   };
 
+  const hasApplied = (offerId) => {
+    return applications.some(app => app.offerId === offerId);
+  };
+
+  const getApplicationStatus = (offerId) => {
+    const application = applications.find(app => app.offerId === offerId);
+    return application?.status || null;
+  };
+
   const open_detail = (offer) => { set_selected(offer); set_detail_open(true); };
-  const open_apply  = (offer) => { set_selected(offer); set_detail_open(false); set_apply_open(true); };
+  
+  const open_apply = (offer) => { 
+    // Check if already applied
+    if (hasApplied(offer.id)) {
+      alert('Vous avez déjà postulé à cette offre.');
+      return;
+    }
+    set_selected(offer); 
+    set_detail_open(false); 
+    set_apply_open(true); 
+  };
+
+  const handleApplicationSuccess = () => {
+    // Refresh applications after successful application
+    fetchApplications();
+    set_apply_open(false);
+  };
 
   if (loading) return <Loading />;
 
@@ -101,6 +153,8 @@ const Offers = () => {
               offer={offer}
               onDetail={open_detail}
               onApply={open_apply}
+              hasApplied={hasApplied(offer.id)}
+              applicationStatus={getApplicationStatus(offer.id)}
             />
           ))}
         </div>
@@ -111,12 +165,15 @@ const Offers = () => {
           offer={selected_offer}
           onClose={() => set_detail_open(false)}
           onApply={open_apply}
+          hasApplied={hasApplied(selected_offer?.id)}
+          applicationStatus={getApplicationStatus(selected_offer?.id)}
         />
       )}
       {apply_open && (
         <ApplyModal
           offer={selected_offer}
           onClose={() => set_apply_open(false)}
+          onSuccess={handleApplicationSuccess}
         />
       )}
     </div>

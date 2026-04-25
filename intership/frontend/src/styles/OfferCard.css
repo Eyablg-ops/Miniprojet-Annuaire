@@ -444,3 +444,40 @@
     display: none;
   }
 }
+
+/* Add to OfferCard.css */
+
+/* Applied badge */
+.applied-badge {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 10px;
+  width: fit-content;
+}
+
+/* Disabled button state */
+.oc-btn-primary.disabled,
+.oc-btn-primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+.oc-btn-primary.disabled:hover,
+.oc-btn-primary:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Card with applied state */
+.oc-card.applied {
+  border-left: 4px solid #10b981;
+  background: #f0fdf4;
+}

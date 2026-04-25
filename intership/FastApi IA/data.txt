@@ -10,6 +10,8 @@ Recruiter@123
 recruit@trvlcode.com
 Recruiter@123
 
+asma@gmail.com
+asma123
 
 http://localhost:8000/recommend/student-to-internships
 Student	Major	Best Match	            Expected            Score	Reasoning

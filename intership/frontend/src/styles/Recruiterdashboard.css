@@ -87,7 +87,7 @@ body {
 .brand-name {
   font-size: 1.05rem;
   font-weight: 800;
-  color: white;
+  color: white !important;
   letter-spacing: -0.2px;
   line-height: 1.2;
 }

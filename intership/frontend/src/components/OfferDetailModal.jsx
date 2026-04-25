@@ -1,12 +1,18 @@
 import React from 'react';
 import '../styles/OfferDetailModal.css';
 
-export default function OfferDetailModal({ offer, onClose, onApply }) {
+export default function OfferDetailModal({ offer, onClose, onApply, hasApplied }) {
   if (!offer) return null;
 
   const skills = offer.requiredSkills
     ? offer.requiredSkills.split(',').map(s => s.trim()).filter(Boolean)
     : [];
+
+  const handleApply = () => {
+    if (!hasApplied) {
+      onApply(offer);
+    }
+  };
 
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
@@ -22,6 +28,9 @@ export default function OfferDetailModal({ offer, onClose, onApply }) {
                 <span className="modal-badge modal-badge-primary">{offer.type || 'Stage'}</span>
                 {offer.status === 'PUBLIEE' && (
                   <span className="modal-badge modal-badge-success">✓ Offre ouverte</span>
+                )}
+                {hasApplied && (
+                  <span className="modal-badge modal-badge-applied">✅ Déjà postulé</span>
                 )}
               </div>
               <div className="modal-title">{offer.title}</div>
@@ -77,8 +86,12 @@ export default function OfferDetailModal({ offer, onClose, onApply }) {
           <button className="modal-btn modal-btn-secondary" onClick={onClose}>
             Fermer
           </button>
-          <button className="modal-btn modal-btn-primary" onClick={() => onApply(offer)}>
-            ✉ Postuler
+          <button 
+            className={`modal-btn modal-btn-primary ${hasApplied ? 'disabled' : ''}`}
+            onClick={handleApply}
+            disabled={hasApplied}
+          >
+            {hasApplied ? '✓ Déjà postulé' : '✉ Postuler'}
           </button>
         </div>
       </div>

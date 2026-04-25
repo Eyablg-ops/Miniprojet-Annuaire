@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { Form, Input, Button, Card, Typography, message, Divider, Space } from 'antd';
-import { UserOutlined, LockOutlined, LoginOutlined, GoogleOutlined, FacebookOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Card, Typography, message, Divider, Space, Tabs } from 'antd';
+import { UserOutlined, LockOutlined, LoginOutlined, GoogleOutlined, FacebookOutlined, UserSwitchOutlined, TeamOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import '../styles/AntLogin.css';
 
 const { Title, Text } = Typography;
+const { TabPane } = Tabs;
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+  const [userType, setUserType] = useState('user');
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -34,20 +36,21 @@ const Login = () => {
       if (userType === 'STUDENT') {
         try {
           const studentResponse = await axios.get(
-            `http://localhost:8080/api/student/email/${email}`,
+            `http://localhost:8080/api/students/email/${email}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           localStorage.setItem('studentId', studentResponse.data.id);
           message.success(`Bienvenue ${studentResponse.data.firstName} !`);
           navigate('/student/dashboard');
         } catch (err) {
+          console.error('Error fetching student:', err);
           localStorage.setItem('studentId', userId);
           navigate('/student/dashboard');
         }
       } else if (userType === 'RECRUITER') {
         try {
           const recruiterRes = await axios.get(
-            `http://localhost:8080/api/recruiters/me`,
+            `http://localhost:8080/api/recruiters/user/${userId}`,
             { headers: { Authorization: `Bearer ${token}` } }
           );
           if (recruiterRes.data?.company?.id) {
@@ -56,12 +59,27 @@ const Login = () => {
           message.success('Connexion réussie !');
           navigate('/recruiter/dashboard');
         } catch (err) {
+          console.error('Error fetching recruiter:', err);
           navigate('/recruiter/dashboard');
+        }
+      } else if (userType === 'ENSEIGNANT') {
+        try {
+          const enseignantRes = await axios.get(
+            `http://localhost:8080/api/enseignants/user/${userId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          localStorage.setItem('enseignantId', enseignantRes.data.id);
+          message.success(`Bienvenue Professeur ${enseignantRes.data.firstName} !`);
+          navigate('/enseignant/dashboard');
+        } catch (err) {
+          console.error('Error fetching enseignant:', err);
+          navigate('/enseignant/dashboard');
         }
       } else if (userType === 'ADMIN') {
         navigate('/admin/dashboard');
       }
     } catch (err) {
+      console.error('Login error:', err);
       message.error(err.response?.data || 'Email ou mot de passe incorrect');
     } finally {
       setLoading(false);

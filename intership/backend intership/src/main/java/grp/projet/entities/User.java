@@ -44,6 +44,10 @@ public class User {
     @JsonIgnore
     private Admin admin;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Enseignant enseignant;
+
     // Constructors
     public User() {}
 
@@ -80,6 +84,9 @@ public class User {
 
     public Recruiter getRecruiter() { return recruiter; }
     public void setRecruiter(Recruiter recruiter) { this.recruiter = recruiter; }
+
+    public Enseignant getEnseignant() { return enseignant; }
+    public void setEnseignant(Enseignant enseignant) { this.enseignant = enseignant; }
 
     @PrePersist
     protected void onCreate() {

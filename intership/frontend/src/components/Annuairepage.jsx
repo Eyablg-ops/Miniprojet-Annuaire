@@ -33,13 +33,6 @@ const AnnuairePage = () => {
 
   return (
     <div className="annuaire-container">
-
-      {/* ── En-tête ── */}
-      <div className="annuaire-header">
-        <h2>🏢 Annuaire des Sociétés</h2>
-        <p className="annuaire-subtitle">Découvrez les entreprises tech en Tunisie</p>
-      </div>
-
       {/* ── Filtres ── */}
       <div className="annuaire-filters">
         <div className="search-input-wrapper">

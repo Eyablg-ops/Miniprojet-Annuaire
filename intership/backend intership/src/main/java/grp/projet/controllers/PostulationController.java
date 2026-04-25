@@ -49,6 +49,66 @@ public class PostulationController {
                 .orElseThrow(() -> new RuntimeException("Recruiter not found"));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllPostulations() {
+        try {
+            List<Postulation> postulations = postulationRepository.findAll();
+
+            List<Map<String, Object>> result = postulations.stream()
+                    .map(p -> {
+                        Map<String, Object> m = new HashMap<>();
+                        m.put("id", p.getId());
+                        m.put("offerId", p.getOfferId());
+                        m.put("status", p.getStatus().toString());
+                        m.put("coverLetter", p.getCoverLetter());
+                        m.put("cvUrl", p.getCvUrl());
+                        m.put("appliedAt", p.getAppliedAt());
+
+                        // Get offer details
+                        offerRepository.findById(p.getOfferId()).ifPresent(offer -> {
+                            m.put("offerTitle", offer.getTitle());
+                            m.put("offerLocation", offer.getLocation());
+                            m.put("offerType", offer.getType());
+                            m.put("offerDuration", offer.getDuration());
+                            m.put("companyName", offer.getCompany().getName());
+                            m.put("companyId", offer.getCompany().getId());
+                        });
+
+                        // Student details
+                        Student s = p.getStudent();
+                        m.put("studentId", s.getId());
+                        m.put("studentFirstName", s.getFirstName());
+                        m.put("studentLastName", s.getLastName());
+                        m.put("studentEmail", s.getUser() != null ? s.getUser().getEmail() : null);
+                        m.put("studentPhone", s.getPhone());
+                        m.put("studentEducationLevel", s.getEducationLevel());
+                        m.put("studentMajor", s.getMajor());
+                        m.put("studentUniversity", s.getUniversity());
+
+                        // Student skills
+                        if (s.getSkills() != null) {
+                            List<Map<String, String>> skills = s.getSkills().stream()
+                                    .map(skill -> {
+                                        Map<String, String> skillMap = new HashMap<>();
+                                        skillMap.put("skillName", skill.getSkillName());
+                                        skillMap.put("skillLevel", skill.getSkillLevel().toString());
+                                        return skillMap;
+                                    })
+                                    .collect(Collectors.toList());
+                            m.put("studentSkills", skills);
+                        }
+
+                        return m;
+                    })
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching postulations: " + e.getMessage());
+        }
+    }
+
     // ── POST /api/postulations/offre/{offreId} ──────────────────
     @PostMapping(value = "/offre/{offreId}",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -278,20 +338,26 @@ public class PostulationController {
         }
     }
 
-    // ── PATCH /api/postulations/{id}/statut ─────────────────
-    @PatchMapping("/{id}/statut")
-    public ResponseEntity<?> changerStatut(@PathVariable Long id, @RequestParam String statut) {
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(
+            @PathVariable Long id,
+            @RequestBody Map<String, String> body) {
+        String statut = body.get("status");
+        if (statut == null || statut.isEmpty()) {
+            return ResponseEntity.badRequest().body("Status is required");
+        }
+
         return postulationRepository.findById(id)
                 .map(p -> {
                     try {
-                        // Verify the recruiter has access to this application
+                        // Verify the recruiter has access
                         Recruiter recruiter = getCurrentRecruiter();
                         Offer offer = offerRepository.findById(p.getOfferId())
                                 .orElseThrow(() -> new RuntimeException("Offer not found"));
 
                         if (!offer.getCompany().getId().equals(recruiter.getCompany().getId())) {
                             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                                    .body("Vous n'avez pas accès à cette candidature");
+                                    .body("You don't have access to this application");
                         }
 
                         p.setStatus(grp.projet.entities.PostulationStatus.valueOf(statut.toUpperCase()));
@@ -303,7 +369,7 @@ public class PostulationController {
                         return ResponseEntity.ok(m);
 
                     } catch (IllegalArgumentException e) {
-                        return ResponseEntity.badRequest().body("Statut invalide : " + statut);
+                        return ResponseEntity.badRequest().body("Invalid status: " + statut);
                     }
                 })
                 .orElse(ResponseEntity.notFound().build());

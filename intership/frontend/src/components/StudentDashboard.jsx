@@ -7,6 +7,7 @@ import Documents from "./student/Documents";
 import Offers from "./student/Offers";
 import StudentRecommendations from "./recommendation/StudentRecommendations";
 import StudentCompanyRecommendations from "./recommendation/StudentCompanyRecommendations";
+import MyApplications from "./student/MyApplications";
 import "../styles/StudentDashboard.css";
 import {
   downloadProfilePicture,
@@ -21,6 +22,7 @@ const StudentDashboard = () => {
   const [profile, set_profile] = useState(null);
   const [loading, set_loading] = useState(true);
   const [avatar_url, set_avatar_url] = useState(null);
+  const [refreshApplications, setRefreshApplications] = useState(false);
 
   useEffect(() => {
     const user_type = localStorage.getItem("userType");
@@ -81,6 +83,11 @@ const StudentDashboard = () => {
     navigate("/");
   };
 
+  const handleApplicationUpdate = () => {
+    // Refresh applications list when a new application is submitted
+    setRefreshApplications(prev => !prev);
+  };
+
   const completion = useMemo(() => {
     if (!profile) {
       return 0;
@@ -118,10 +125,28 @@ const StudentDashboard = () => {
 
   const handleApply = async (offerId, coverLetter) => {
     try {
-      // Call your API to apply for the offer
-      // await applyToOffer(offerId, coverLetter);
-      console.log(`Applied to offer ${offerId} with cover letter:`, coverLetter);
-      alert("Application submitted successfully!");
+      const token = localStorage.getItem('token');
+      const formData = new FormData();
+      formData.append('coverLetter', coverLetter);
+      
+      // If you have a CV file, you can append it here
+      // formData.append('cv', cvFile);
+      
+      const response = await fetch(`http://localhost:8080/api/postulations/offre/${offerId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
+      });
+      
+      if (response.ok) {
+        alert("Application submitted successfully!");
+        handleApplicationUpdate(); // Refresh applications list
+      } else {
+        const error = await response.text();
+        alert(`Failed to submit application: ${error}`);
+      }
     } catch (error) {
       console.error("Error applying:", error);
       alert("Failed to submit application");
@@ -250,7 +275,7 @@ const StudentDashboard = () => {
           </div>
 
           <div className="student-section-card">
-            <h3>AI Recommendations</h3>
+            <h3>🎯 AI Recommendations</h3>
             <p className="student-mini-text">
               Get personalized internship and company recommendations based on
               your skills and profile.
@@ -262,6 +287,22 @@ const StudentDashboard = () => {
                 onClick={() => set_active_tab("recommendations")}
               >
                 View Recommendations
+              </button>
+            </div>
+          </div>
+
+          <div className="student-section-card">
+            <h3>📋 My Applications</h3>
+            <p className="student-mini-text">
+              Track the status of your internship applications.
+            </p>
+
+            <div className="student-actions">
+              <button
+                className="student-primary-btn"
+                onClick={() => set_active_tab("applications")}
+              >
+                View My Applications
               </button>
             </div>
           </div>
@@ -302,9 +343,11 @@ const StudentDashboard = () => {
       case "internships":
         return <Internships />;
       case "recommendations":
-        return <StudentRecommendations onApply={handleApply} />;
+        return <StudentRecommendations onApply={handleApply} onApplicationUpdate={handleApplicationUpdate} />;
       case "recommended-companies":
         return <StudentCompanyRecommendations />;
+      case "applications":
+        return <MyApplications refreshTrigger={refreshApplications} />;
       default:
         return render_dashboard_home();
     }
@@ -364,72 +407,63 @@ const StudentDashboard = () => {
 
             <div className="student-menu">
               <button
-                className={`student-menu-btn ${
-                  active_tab === "dashboard" ? "active" : ""
-                }`}
+                className={`student-menu-btn ${active_tab === "dashboard" ? "active" : ""}`}
                 onClick={() => set_active_tab("dashboard")}
               >
                 Dashboard
               </button>
 
               <button
-                className={`student-menu-btn ${
-                  active_tab === "profile" ? "active" : ""
-                }`}
+                className={`student-menu-btn ${active_tab === "profile" ? "active" : ""}`}
                 onClick={() => set_active_tab("profile")}
               >
                 My profile
               </button>
 
               <button
-                className={`student-menu-btn ${
-                  active_tab === "documents" ? "active" : ""
-                }`}
+                className={`student-menu-btn ${active_tab === "documents" ? "active" : ""}`}
                 onClick={() => set_active_tab("documents")}
               >
                 My CV & photo
               </button>
 
               <button
-                className={`student-menu-btn ${
-                  active_tab === "skills" ? "active" : ""
-                }`}
+                className={`student-menu-btn ${active_tab === "skills" ? "active" : ""}`}
                 onClick={() => set_active_tab("skills")}
               >
                 My skills
               </button>
 
               <button
-                className={`student-menu-btn ${
-                  active_tab === "recommendations" ? "active" : ""
-                }`}
+                className={`student-menu-btn ${active_tab === "recommendations" ? "active" : ""}`}
                 onClick={() => set_active_tab("recommendations")}
               >
                 Recommended Offers
               </button>
 
               <button
-                className={`student-menu-btn ${
-                  active_tab === "recommended-companies" ? "active" : ""
-                }`}
+                className={`student-menu-btn ${active_tab === "recommended-companies" ? "active" : ""}`}
                 onClick={() => set_active_tab("recommended-companies")}
               >
                 Recommended Companies
               </button>
 
               <button
-                className={`student-menu-btn ${
-                  active_tab === "offers" ? "active" : ""
-                }`}
+                className={`student-menu-btn ${active_tab === "applications" ? "active" : ""}`}
+                onClick={() => set_active_tab("applications")}
+              >
+                My Applications
+              </button>
+
+              <button
+                className={`student-menu-btn ${active_tab === "offers" ? "active" : ""}`}
                 onClick={() => set_active_tab("offers")}
               >
                 All Offers
               </button>
 
               <button
-                className={`student-menu-btn ${
-                  active_tab === "internships" ? "active" : ""
-                }`}
+                className={`student-menu-btn ${active_tab === "internships" ? "active" : ""}`}
                 onClick={() => set_active_tab("internships")}
               >
                 My internships

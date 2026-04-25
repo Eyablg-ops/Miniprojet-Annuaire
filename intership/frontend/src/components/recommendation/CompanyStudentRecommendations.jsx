@@ -91,24 +91,28 @@ const CompanyStudentRecommendations = ({ companyId }) => {
   const updateApplicationStatus = async (applicationId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8080/api/postulations/${applicationId}/statut?statut=${newStatus}`, {
-        method: 'PATCH',
+      
+      // Utiliser PUT avec body JSON
+      const response = await fetch(`http://localhost:8080/api/postulations/${applicationId}/status`, {
+        method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({ status: newStatus })
       });
       
       if (response.ok) {
-        // Refresh data
-        fetchData();
+        await fetchData();
         alert(`Application ${newStatus.toLowerCase()} successfully!`);
       } else {
-        throw new Error('Failed to update status');
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
+        alert(`Failed to update status: ${errorText}`);
       }
     } catch (error) {
       console.error('Error updating status:', error);
-      alert('Failed to update application status');
+      alert('Failed to update application status: ' + error.message);
     }
   };
 

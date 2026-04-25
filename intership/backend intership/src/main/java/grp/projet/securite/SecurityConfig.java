@@ -54,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Postulation endpoints
                 .antMatchers("/api/postulations/**").authenticated()
                 // All other requests require authentication
+                .antMatchers("/api/auth/enseignant/register").permitAll()
+                .antMatchers("/api/enseignants/**").hasRole("ENSEIGNANT")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

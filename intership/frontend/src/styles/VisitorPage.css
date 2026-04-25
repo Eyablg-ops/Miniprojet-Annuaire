@@ -95,7 +95,19 @@ body {
   background: linear-gradient(135deg, #0b3b5f 0%, #1e5a7a 40%, #3b82f6 100%);
   background-clip: text;
   -webkit-background-clip: text;
-  color: transparent;
+  color: rgb(0, 14, 47) !important;
+  font-family: cursive;
+}
+
+.brand-namee {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #0b3b5f 0%, #1e5a7a 40%, #3b82f6 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: rgb(0, 14, 47) !important;
+  font-family: cursive;
 }
 
 .brand-sub {
@@ -204,9 +216,48 @@ body {
 
 .cta-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Empêche le retour à la ligne */
   gap: 1rem;
   margin-bottom: 2rem;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Ajustement pour les boutons individuels */
+.btn-primary,
+.btn-outline-accent,
+.btn-outline-teacher {
+  white-space: nowrap; /* Empêche le texte de passer à la ligne */
+  padding: 0.9rem 1.5rem;
+}
+
+/* Responsive: sur mobile, passer en colonne */
+@media (max-width: 768px) {
+  .cta-group {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .btn-primary,
+  .btn-outline-accent,
+  .btn-outline-teacher {
+    white-space: normal;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 580px) {
+  .cta-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btn-primary,
+  .btn-outline-accent,
+  .btn-outline-teacher {
+    justify-content: center;
+  }
 }
 
 .btn-primary {
@@ -596,4 +647,69 @@ body {
   .stat-block {
     min-width: 140px;
   }
+}
+
+/* Teacher Button Styles */
+.btn-outline-teacher {
+  background: white;
+  border: 1px solid #8b5cf6;
+  padding: 0.9rem 2rem;
+  border-radius: 48px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #7c3aed;
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-outline-teacher i {
+  font-size: 1rem;
+  color: #8b5cf6;
+  transition: var(--transition);
+}
+
+.btn-outline-teacher:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 22px -12px rgba(124, 58, 237, 0.4);
+  border-color: transparent;
+}
+
+.btn-outline-teacher:hover i {
+  color: white;
+}
+
+/* Active state for teacher button */
+.btn-outline-teacher:active {
+  transform: translateY(-1px);
+}
+
+/* Focus state for accessibility */
+.btn-outline-teacher:focus-visible {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+/* Teacher badge in hero section - optional */
+.hero-badge-teacher {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(139, 92, 246, 0.12);
+  backdrop-filter: blur(2px);
+  padding: 0.4rem 1.2rem;
+  border-radius: 60px;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #6d28d9;
+}
+
+.hero-badge-teacher i {
+  font-size: 1rem;
+  color: #8b5cf6;
 }

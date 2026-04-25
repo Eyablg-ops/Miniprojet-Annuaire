@@ -1,8 +1,10 @@
 // VisitorPage.jsx
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/VisitorPage.css';
 
 const VisitorPage = () => {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -15,11 +17,13 @@ const VisitorPage = () => {
 
   const handleNavigation = (role = null) => {
     if (role === 'student') {
-      window.location.href = '/signup/student';
+      navigate('/signup/student');
     } else if (role === 'recruiter') {
-      window.location.href = '/signup/recruiter';
+      navigate('/signup/recruiter');
+    } else if (role === 'enseignant') {
+      navigate('/signup/enseignant');
     } else {
-      window.location.href = '/login';
+      navigate('/login');
     }
   };
 
@@ -27,6 +31,7 @@ const VisitorPage = () => {
     { icon: 'fas fa-building', value: '500+', label: 'Entreprises partenaires' },
     { icon: 'fas fa-users', value: '10k+', label: 'Étudiants inscrits' },
     { icon: 'fas fa-briefcase', value: '2k+', label: 'Stages proposés chaque année' },
+    { icon: 'fas fa-chalkboard-user', value: '150+', label: 'Enseignants accompagnateurs' },
   ];
 
   const features = [
@@ -66,10 +71,9 @@ const VisitorPage = () => {
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9a45-KXV32g7AcuYFtRqbas8BMG2Nansr6g&s" 
               alt="ISSAT" 
               className="issat-logo-img"
-              style={{width:'100px',height:'50px'}}
             />
             <div className="brand-titles">
-              <span className="brand-name">ISSAT Sousse</span>
+              <span className="brand-namee">ISSAT Sousse</span>
               <span className="brand-sub">
                 Institut Supérieur des Sciences Appliquées et de Technologie
               </span>
@@ -91,7 +95,7 @@ const VisitorPage = () => {
                 <span>Stage & Alternance</span>
               </div>
               <h1 className="hero-title">
-                Trouvez votre <span>stage </span> <br /> et propulsez votre carrière
+                Trouvez votre <span>stage</span> <br /> et propulsez votre carrière
               </h1>
               <p className="hero-desc">
                 Connectez-vous aux meilleures entreprises de la région Sousse, bénéficiez d’un matching intelligent 
@@ -103,6 +107,9 @@ const VisitorPage = () => {
                 </button>
                 <button className="btn-outline-accent" onClick={() => handleNavigation('recruiter')}>
                   <i className="fas fa-building"></i> Je suis recruteur
+                </button>
+                <button className="btn-outline-teacher" onClick={() => handleNavigation('enseignant')}>
+                  <i className="fas fa-chalkboard-user"></i> Je suis enseignant
                 </button>
               </div>
             </div>

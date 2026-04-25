@@ -1,5 +1,6 @@
 package grp.projet.controllers;
 
+import grp.projet.DTOs.EnseignantRegisterRequest;
 import grp.projet.DTOs.LoginRequest;
 import grp.projet.DTOs.RecruiterRegisterRequest;
 import grp.projet.DTOs.StudentRegisterRequest;
@@ -37,6 +38,16 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/enseignant/register")  // Add this
+    public ResponseEntity<?> registerEnseignant(@RequestBody EnseignantRegisterRequest request) {
+        try {
+            AuthResponse response = authService.registerEnseignant(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/admin/login")
     public ResponseEntity<?> adminLogin(@RequestBody LoginRequest request) {
         try {
@@ -46,6 +57,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {

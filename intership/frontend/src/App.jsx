@@ -11,7 +11,8 @@ import StudentDashboard  from './components/StudentDashboard';
 import AdminDashboard    from './components/AdminDashboard';
 import Loading           from './ui/Loading';
 import RouteChangeLoader from './ui/RouteChangeLoader';
-
+import EnseignantSignup from './components/EnseignantSignup';
+import EnseignantDashboard from './components/EnseignantDashboard';
 
 // ── Composants Personne 2 (nouveaux) ─────────────────────
 import RecruiterDashboard from './components/RecruiterDashboard'; // version enrichie
@@ -74,6 +75,16 @@ function App() {
                   <AdminDashboard />
                 </ProtectedRoute>
               }
+            />
+
+            <Route path="/signup/enseignant" element={<EnseignantSignup />} />
+            <Route 
+              path="/enseignant/dashboard" 
+              element={
+                <ProtectedRoute userType="ENSEIGNANT">
+                  <EnseignantDashboard />
+                </ProtectedRoute>
+              } 
             />
           </Routes>
         </div>
